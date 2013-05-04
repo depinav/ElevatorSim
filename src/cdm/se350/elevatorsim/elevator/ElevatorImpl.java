@@ -9,15 +9,21 @@ public class ElevatorImpl implements ElevatorInt, Runnable {
 	private String travelDir;
 	private boolean isTraveling;
 	private static final int DEFAULTFL = 0;
-	private int currentOccup;
-	private int maxOccup;
+//	private int currentOccup;
+//	private int maxOccup;
 	private int destination;
 	private int doorOpenTime;
 	private int speed;
 	private PriorityQueue<Integer> destList = new PriorityQueue<Integer>();
-	private int idleTime;
 	private int maxIdleTime;
 
+	public ElevatorImpl( int _doorOpen, int _speed, int _maxIdle ) {
+		
+		doorOpenTime = _doorOpen;
+		speed = _speed;
+		maxIdleTime = _maxIdle;
+	}
+	
 	public boolean isIdle() {
 		return isTraveling;
 	}
