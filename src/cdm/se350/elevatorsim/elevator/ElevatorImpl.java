@@ -8,7 +8,7 @@ public class ElevatorImpl implements ElevatorInt, Runnable {
 	
 	private String travelDir;
 	private boolean isTraveling;
-	private static final int DEFAULTFL = 0;
+	private static final int DEFAULT = 0;
 //	private int currentOccup;
 //	private int maxOccup;
 	private int destination;
@@ -16,6 +16,7 @@ public class ElevatorImpl implements ElevatorInt, Runnable {
 	private int speed;
 	private PriorityQueue<Integer> destList = new PriorityQueue<Integer>();
 	private int maxIdleTime;
+	private int currFloor;
 
 	public ElevatorImpl( int _doorOpen, int _speed, int _maxIdle ) {
 		
@@ -30,8 +31,18 @@ public class ElevatorImpl implements ElevatorInt, Runnable {
 
 	public void toDefault() {
 		
-//		Go to default floor after certain amount time
-		destList.add(DEFAULTFL);
+		destList.add(DEFAULT);
+	}
+	
+	public PriorityQueue<Integer> getDestList() {
+		
+		return destList;
+	}
+	
+	public void addDest( int newDest ) {
+		
+		if ( (travelDir.equals("Up") && newDest > currFloor) || (travelDir.equals("Down") && newDest < currFloor))
+			destList.add(newDest);
 	}
 
 	public void run() {
