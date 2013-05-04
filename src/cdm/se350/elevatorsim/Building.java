@@ -7,7 +7,7 @@ import cdm.se350.elevatorsim.elevator.ElevatorImpl;
 
 public class Building {
 	
-	public Building (int floors, int elevators){
+	public Building (int floors, int elevators, int doorsOpen, int elevSpeed, int idleTime){
 		ArrayList<Floor> floorList = new ArrayList<Floor>();
 		for (int i = 0; i < floors; i++){
 			  floorList.add(new Floor());
@@ -15,8 +15,7 @@ public class Building {
 		}
 		ArrayList<ElevatorImpl> elevatorList = new ArrayList<ElevatorImpl>();
 		for (int j = 0; j < elevators; j++){
-			elevatorList.add(new ElevatorImpl());
+			elevatorList.add(new ElevatorImpl(doorsOpen, elevSpeed, idleTime));
 		}
-		
 	}
 }

@@ -37,5 +37,4 @@ public class ElevatorImpl implements ElevatorInt, Runnable {
 	public void run() {
 		
 	}
-
 }
