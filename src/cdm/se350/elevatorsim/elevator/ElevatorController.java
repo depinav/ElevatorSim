@@ -38,8 +38,16 @@ public final class ElevatorController {
 		return controllerInstance;
 	}
 	
-	public void sendRequest( int dest, int elevator ) {
+	public void sendRequest( int elevator, int dest ) {
 		
-		elevatorList.get(elevator).addDest(dest);
+		elevatorList.get(elevator - 1).addDest(dest);
+	}
+	
+	public void startElevators() {
+		
+		for (int i = 0; i < elevatorList.size(); i++) {
+			
+			(new Thread (elevatorList.get(i))).start();
+		}
 	}
 }
