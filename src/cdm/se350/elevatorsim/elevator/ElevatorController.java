@@ -48,6 +48,12 @@ public final class ElevatorController {
 		for (int i = 0; i < elevatorList.size(); i++) {
 			
 			(new Thread (elevatorList.get(i))).start();
+//			System.out.println(elevatorList.get(0).getDestList().size());
 		}
+	}
+	
+	public ElevatorImpl getElevator(int i) {
+		
+		return elevatorList.get(i - 1);
 	}
 }

@@ -16,14 +16,14 @@ public class Building {
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	private Date date = new Date();
 	
-	public Building (int floors, int elevators, int doorsOpen, int elevSpeed, int idleTime){
+	public Building (int floors, int elevators){
 		
 		for (int i = 0; i < floors; i++){
 			  floorList.add(new Floor());
 		}
 		
 		for (int j = 0; j < elevators; j++){
-			elevatorList.add(new ElevatorImpl(doorsOpen, elevSpeed, idleTime, j));
+			elevatorList.add(new ElevatorImpl(j));
 		}
 		
 		System.out.println(dateFormat.format(date) + "\tBuilding created with " + floors + " floors and " + elevators + " elevators");

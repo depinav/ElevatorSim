@@ -1,7 +1,10 @@
 package cdm.se350.elevatorsim.interfaces;
 
+import java.util.PriorityQueue;
+
 public interface ElevatorInt {
 	
-	boolean isIdle();
-	void toDefault();
+	void arrived() throws InterruptedException;
+	void addDest(int newDest);
+	public PriorityQueue<Integer> getDestList();
 }
