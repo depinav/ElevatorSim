@@ -6,5 +6,5 @@ public interface ElevatorInt {
 	
 	void arrived() throws InterruptedException;
 	void addDest(int newDest);
-	public PriorityQueue<Integer> getDestList();
+	PriorityQueue<Integer> getDestList();
 }

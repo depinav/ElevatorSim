@@ -11,6 +11,7 @@ public class Simluator {
 	public static void main(String[] args) throws InterruptedException {
 		
 		Building myBuilding = new Building(15, 6); // Floors, Elevators, Door Open Time, Elevator Speed, Max Idle Time
+		myBuilding.setScale(4);
 		ElevatorController controller = ElevatorController.getInstance(myBuilding.getElevatorList());
 		controller.startElevators();
 		controller.sendRequest(1, 11);
@@ -20,13 +21,15 @@ public class Simluator {
 		controller.sendRequest(3, 13);
 		Thread.sleep(2000);
 		controller.sendRequest(3, 15);
-		Thread.sleep(15000);
+		Thread.sleep(6000);
 		controller.sendRequest(5, 10);
 		Thread.sleep(2000);
 		controller.sendRequest(5, 1);
-		Thread.sleep(8000);
+		Thread.sleep(25000);
 		controller.sendRequest(5, 5);
 		Thread.sleep(1000);
 		controller.sendRequest(5, 3);
+		Thread.sleep(35000);
+		controller.stopElevators();
 	}
 }

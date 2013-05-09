@@ -7,8 +7,9 @@ import java.util.Date;
 import java.util.PriorityQueue;
 
 import cdm.se350.elevatorsim.interfaces.ElevatorInt;
+import cdm.se350.elevatorsim.interfaces.TimeInt;
 
-public class ElevatorImpl implements ElevatorInt, Runnable {
+public class ElevatorImpl implements ElevatorInt, Runnable, TimeInt {
 	
 	private String travelDir;
 	private static final int DEFAULT = 1;
@@ -21,12 +22,13 @@ public class ElevatorImpl implements ElevatorInt, Runnable {
 	private int currFloor;
 	private int elevatorNum;
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-	private Date date = new Date();
 	private boolean running = true;
+	private long scaled = 1;
 	private int state;
 	private static final int TODEFAULT = 1;
 	private static final int TRAVELING = 2;
 	private static final int IDLING = 3;
+	private static final int STOPPED = 4;
 
 	public ElevatorImpl(int _elevatorNum) {
 		
@@ -44,6 +46,9 @@ public class ElevatorImpl implements ElevatorInt, Runnable {
 	}
 	
 	public void addDest( int newDest ) {
+		
+		if (state == TODEFAULT)
+			destList.clear();
 		
 		synchronized (this) {
 			if (currFloor != newDest) {
@@ -67,17 +72,25 @@ public class ElevatorImpl implements ElevatorInt, Runnable {
 	
 	public void arrived() throws InterruptedException {
 		
-			synchronized (this) {
-				if (state == TODEFAULT) {
-					this.setState(IDLING);
-					destList.remove();
-				} else {
-					System.out.println(dateFormat.format(date) + "\tElevator " + elevatorNum + " doors Opening...");
-					Thread.sleep(this.toMilli(doorOpenTime));
-					System.out.println(dateFormat.format(date) + "\tElevator " + elevatorNum + " doors Closing...");
-					destList.remove();
-				}
+		synchronized (this) {
+			if (state == TODEFAULT) {
+				this.setState(IDLING);
+			} else {
+				System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " doors opening...");
+				Thread.sleep(this.toMilli(this.getScaled(doorOpenTime)));
+				System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " doors closing...");
 			}
+			destList.remove();
+		}
+	}
+	
+	public void stop() {
+		
+		running = false;
+		this.setState(STOPPED);
+		synchronized (this) {
+			this.notifyAll();
+		}
 	}
 	
 	private void setState(int _state) {
@@ -85,9 +98,18 @@ public class ElevatorImpl implements ElevatorInt, Runnable {
 		state = _state;
 	}
 
-	private long toMilli(long sec) {
+	public long toMilli(long sec) {
 		
 		return sec * 1000;
+	}
+	
+	public void setScaled(long _scaled) {
+		
+	}
+	
+	public long getScaled(long unscaled) {
+		
+		return (long)((int)unscaled / (int)scaled);
 	}
 
 	public void run() {
@@ -98,7 +120,7 @@ public class ElevatorImpl implements ElevatorInt, Runnable {
 				if (destList.isEmpty()) {
 					try {
 						if (currFloor != DEFAULT)
-							this.wait(this.toMilli(maxIdleTime));
+							this.wait(this.toMilli(this.getScaled(maxIdleTime)));
 						else
 							this.wait();
 					} catch (InterruptedException e) {
@@ -111,7 +133,7 @@ public class ElevatorImpl implements ElevatorInt, Runnable {
 				
 				if(currFloor == destList.peek()) {
 					
-					System.out.println(dateFormat.format(date) + "\tElevator " + elevatorNum + " reached destination: Floor " + currFloor);
+					System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " reached destination: Floor " + currFloor);
 					try {
 						this.arrived();
 					} catch (InterruptedException e) {
@@ -120,25 +142,23 @@ public class ElevatorImpl implements ElevatorInt, Runnable {
 				} else {
 					
 					try {
-						Thread.sleep(this.toMilli(speed));
+						Thread.sleep(this.toMilli(this.getScaled(speed)));
 					} catch (InterruptedException e) {
 						System.out.println("Error with speed of elevator " + elevatorNum);
 						e.printStackTrace();
 					}
-					System.out.println(dateFormat.format(date) + "\tElevator " + elevatorNum + " passing floor " + currFloor);
+					System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " passing floor " + currFloor);
 					if (travelDir.equals("Up"))
 						currFloor++;
 					if (travelDir.equals("Down"))
 						currFloor--;
 				}
 				
-			} else {
-				System.out.println(dateFormat.format(date) + "\tElevator " + elevatorNum +  " moving to default floor");
+			} else if (state != STOPPED){
+				System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum +  " moving to default floor");
 				this.addDest(DEFAULT);
 				this.setState(TODEFAULT);
 			}
-			
-//			running = false;
 		}
 	}
 }

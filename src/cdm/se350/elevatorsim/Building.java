@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import cdm.se350.elevatorsim.elevator.ElevatorController;
 import cdm.se350.elevatorsim.elevator.ElevatorImpl;
 
 
@@ -32,5 +31,12 @@ public class Building {
 	public ArrayList<ElevatorImpl> getElevatorList() {
 		
 		return elevatorList;
+	}
+	
+	public void setScale(long _scaled) {
+		
+		for (int i = 0; i < elevatorList.size(); i++) {
+			elevatorList.get(i).setScaled(_scaled);
+		}
 	}
 }

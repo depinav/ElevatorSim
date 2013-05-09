@@ -1,6 +1,9 @@
 package cdm.se350.elevatorsim.elevator;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public final class ElevatorController {
 	
@@ -8,6 +11,7 @@ public final class ElevatorController {
 	private String direction;
 	private volatile static ElevatorController controllerInstance;
 	private static ArrayList<ElevatorImpl> elevatorList;
+	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	
 	private ElevatorController(){};
 	
@@ -48,8 +52,16 @@ public final class ElevatorController {
 		for (int i = 0; i < elevatorList.size(); i++) {
 			
 			(new Thread (elevatorList.get(i))).start();
-//			System.out.println(elevatorList.get(0).getDestList().size());
 		}
+		System.out.println(dateFormat.format(new Date()) + "\tAll Elevators started");
+	}
+	
+	public void stopElevators(){
+		
+		for (int i = 0; i < elevatorList.size(); i++) {
+			elevatorList.get(i).stop();
+		}
+		System.out.println(dateFormat.format(new Date()) + "\tAll Elevators stopped");
 	}
 	
 	public ElevatorImpl getElevator(int i) {
