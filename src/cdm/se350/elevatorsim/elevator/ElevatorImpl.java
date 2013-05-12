@@ -9,12 +9,25 @@ import java.util.PriorityQueue;
 import cdm.se350.elevatorsim.interfaces.ElevatorInt;
 import cdm.se350.elevatorsim.interfaces.TimeInt;
 
+/**
+ * 
+ * The ElevatorImpl class is the implementation of the ElevatorInt interface.
+ * It generates an elevator that runs in it's own thread, therefore implements
+ * runnable interface.
+ * 
+ * @author 		Victor DePina
+ * @author 		Edric Delleola
+ * @since 		Version 1.0
+ * 
+ */
+
 public class ElevatorImpl implements ElevatorInt, Runnable, TimeInt {
 	
 	private String travelDir;
 	private static final int DEFAULT = 1;
 	private int currentOccup;
 	private int maxOccup;
+	private int maxFloors;
 	private long doorOpenTime;
 	private long speed;
 	private PriorityQueue<Integer> destList = new PriorityQueue<Integer>();
@@ -30,13 +43,14 @@ public class ElevatorImpl implements ElevatorInt, Runnable, TimeInt {
 	private static final int IDLING = 3;
 	private static final int STOPPED = 4;
 
-	public ElevatorImpl(int _elevatorNum) {
+	public ElevatorImpl(int _elevatorNum, int _maxFloors) {
 		
 		doorOpenTime = 5;
 		speed = 1;
 		maxIdleTime = 10;
 		elevatorNum = _elevatorNum + 1;
 		currFloor = DEFAULT;
+		maxFloors = _maxFloors;
 		this.setState(IDLING);
 	}
 	
@@ -51,7 +65,7 @@ public class ElevatorImpl implements ElevatorInt, Runnable, TimeInt {
 			destList.clear();
 		
 		synchronized (this) {
-			if (currFloor != newDest) {
+			if (newDest != currFloor && newDest > 0 && newDest <= maxFloors) {
 				if (destList.isEmpty() && currFloor < newDest) {
 					travelDir = "Up";
 					destList.add(newDest);
@@ -61,6 +75,8 @@ public class ElevatorImpl implements ElevatorInt, Runnable, TimeInt {
 					destList.add(newDest);
 				} else if ( (travelDir.equals("Up") && newDest > currFloor) || (travelDir.equals("Down") && newDest < currFloor))
 					destList.add(newDest);
+				
+				System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " added floor " + newDest + " to destination list");
 			}
 		}
 		
@@ -77,7 +93,7 @@ public class ElevatorImpl implements ElevatorInt, Runnable, TimeInt {
 				this.setState(IDLING);
 			} else {
 				System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " doors opening...");
-				Thread.sleep(this.toMilli(this.getScaled(doorOpenTime)));
+				Thread.sleep(this.getScaled(this.toMilli(doorOpenTime)));
 				System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " doors closing...");
 			}
 			destList.remove();
@@ -104,12 +120,12 @@ public class ElevatorImpl implements ElevatorInt, Runnable, TimeInt {
 	}
 	
 	public void setScaled(long _scaled) {
-		
+		scaled = _scaled;
 	}
 	
 	public long getScaled(long unscaled) {
 		
-		return (long)((int)unscaled / (int)scaled);
+		return unscaled / scaled;
 	}
 
 	public void run() {
@@ -119,8 +135,10 @@ public class ElevatorImpl implements ElevatorInt, Runnable, TimeInt {
 			synchronized (this) {
 				if (destList.isEmpty()) {
 					try {
-						if (currFloor != DEFAULT)
-							this.wait(this.toMilli(this.getScaled(maxIdleTime)));
+						if (currFloor != DEFAULT) {
+							//System.out.println(this.getScaled(this.toMilli(maxIdleTime)));
+							this.wait(this.getScaled(this.toMilli(maxIdleTime)));
+						}
 						else
 							this.wait();
 					} catch (InterruptedException e) {
@@ -142,12 +160,12 @@ public class ElevatorImpl implements ElevatorInt, Runnable, TimeInt {
 				} else {
 					
 					try {
-						Thread.sleep(this.toMilli(this.getScaled(speed)));
+						Thread.sleep(this.getScaled(this.toMilli(speed)));
 					} catch (InterruptedException e) {
 						System.out.println("Error with speed of elevator " + elevatorNum);
 						e.printStackTrace();
 					}
-					System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " passing floor " + currFloor);
+					System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " passing floor " + currFloor + " Full destination list " + destList);
 					if (travelDir.equals("Up"))
 						currFloor++;
 					if (travelDir.equals("Down"))

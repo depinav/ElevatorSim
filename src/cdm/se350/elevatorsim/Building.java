@@ -22,7 +22,7 @@ public class Building {
 		}
 		
 		for (int j = 0; j < elevators; j++){
-			elevatorList.add(new ElevatorImpl(j));
+			elevatorList.add(new ElevatorImpl(j, floorList.size()));
 		}
 		
 		System.out.println(dateFormat.format(date) + "\tBuilding created with " + floors + " floors and " + elevators + " elevators");
@@ -35,8 +35,9 @@ public class Building {
 	
 	public void setScale(long _scaled) {
 		
-		for (int i = 0; i < elevatorList.size(); i++) {
+		for (int i = 0; i < elevatorList.size(); i++)
 			elevatorList.get(i).setScaled(_scaled);
-		}
+		
+		System.out.println(dateFormat.format(date) + "\tScale set to " + _scaled + ":1");
 	}
 }
