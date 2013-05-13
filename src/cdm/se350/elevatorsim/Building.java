@@ -22,13 +22,13 @@ public class Building {
 	public Building (int floors, int elevators){
 		
 		try{
-			if (floors <= 0) throw new Exception("Floors requires a number greater than 0: " + floors);
+			if (floors <= 0) throw new IllegalArgumentException("Floors requires a value greater than 0: " + floors);
 		}catch (Exception flrError){
 			System.out.println("Error: " + flrError.getMessage());
 		}
 		
 		try{
-			if (elevators <= 0) throw new Exception("Elevators requires a number greater than 0: " + elevators);
+			if (elevators <= 0) throw new IllegalArgumentException("Elevators requires a value greater than 0: " + elevators);
 		}catch (Exception eleError){
 			System.out.println("Error: " + eleError.getMessage());
 		}
@@ -97,14 +97,14 @@ public class Building {
 				Building buildingTest = new Building(-2,5);
 				fail("Allowed negative number of floors");
 			}catch (Exception e){
-				System.out.println("Okay. Found : " + e.getMessage());
+				System.out.println("Okay. Found: " + e.getMessage());
 			}
 			
 			try{
 				Building buildingTest = new Building(2,-5);
 				fail("Allowed negative number of floors");
 			}catch (Exception e2){
-				System.out.println("Okay. Found : " + e2.getMessage());
+				System.out.println("Okay. Found: " + e2.getMessage());
 				return;
 			}
 		}
