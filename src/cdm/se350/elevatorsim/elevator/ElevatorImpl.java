@@ -43,6 +43,15 @@ public class ElevatorImpl implements ElevatorInt, Runnable, TimeInt {
 	private static final int IDLING = 3;
 	private static final int STOPPED = 4;
 
+	/**
+	 * 
+	 * The constructor creates a new ElevatorImpl giving it the elevator number and
+	 * the total number of floors in the building.
+	 *  
+	 * @param 		_elevatorNum 	An int representing the elevator number.
+	 * @param 		_maxFloors		An int representing the max amount of floors in the building.
+	 * 
+	 */
 	public ElevatorImpl(int _elevatorNum, int _maxFloors) {
 		
 		doorOpenTime = 5;
@@ -54,11 +63,23 @@ public class ElevatorImpl implements ElevatorInt, Runnable, TimeInt {
 		this.setState(IDLING);
 	}
 	
+	/**
+	 * 
+	 * A method to return the destination list of the current ElevatorImpl
+	 * @return		A collection of the destination list
+	 * 
+	 */
 	public PriorityQueue<Integer> getDestList() {
 		
 		return destList;
 	}
 	
+	/**
+	 * 
+	 * A method in order to add a destination to the elevators destination list.
+	 * @param		newDest			An int representing the floor.
+	 * 
+	 */
 	public void addDest( int newDest ) {
 		
 		if (state == TODEFAULT)
@@ -86,6 +107,12 @@ public class ElevatorImpl implements ElevatorInt, Runnable, TimeInt {
 		this.setState(TRAVELING);
 	}
 	
+	/**
+	 * 
+	 * Initiates certain actions to take place when an elevator arrives to a specified floor
+	 * from it's destination list.
+	 * 
+	 */
 	public void arrived() throws InterruptedException {
 		
 		synchronized (this) {
@@ -100,6 +127,11 @@ public class ElevatorImpl implements ElevatorInt, Runnable, TimeInt {
 		}
 	}
 	
+	/**
+	 * 
+	 * Prepares the current elevator to be stopped.
+	 * 
+	 */
 	public void stop() {
 		
 		running = false;
@@ -114,15 +146,35 @@ public class ElevatorImpl implements ElevatorInt, Runnable, TimeInt {
 		state = _state;
 	}
 
+	/**
+	 * 
+	 * Converts seconds value into milliseconds.
+	 * @return		A long representing the seconds.
+	 */
 	public long toMilli(long sec) {
 		
 		return sec * 1000;
 	}
 	
+	/**
+	 * 
+	 * Used to set the scale for the speed of the running time
+	 * ie: 4:1
+	 * 
+	 * @param 		_scaled		A long representing the scaled amount.
+	 * 
+	 */
 	public void setScaled(long _scaled) {
 		scaled = _scaled;
 	}
 	
+	/**
+	 * 
+	 * Returns the the value of the time scaled
+	 * @param 		unscaled	A long representing the unscaled value.
+	 * @return		The long representing the unscaled value divided by the scale amount.
+	 * 
+	 */
 	public long getScaled(long unscaled) {
 		
 		return unscaled / scaled;

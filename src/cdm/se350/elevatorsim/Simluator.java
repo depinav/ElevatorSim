@@ -4,10 +4,6 @@ import cdm.se350.elevatorsim.elevator.ElevatorController;
 
 public class Simluator {
 
-	/**
-	 * @param args
-	 * @throws InterruptedException 
-	 */
 	public static void main(String[] args) throws InterruptedException {
 		
 		int scale = 2;
