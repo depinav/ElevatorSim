@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import cdm.se350.elevatorsim.interfaces.Elevator;
+
 /**
  * 
  * The ElevatorController class is used to control the requests sent to a collection of elevators
@@ -25,7 +27,7 @@ public final class ElevatorController {
 	private int floorNum;
 	private String direction;
 	private volatile static ElevatorController controllerInstance;
-	private static ArrayList<ElevatorImpl> elevatorList;
+	private static ArrayList<Elevator> elevatorList;
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	
 	private ElevatorController(){};
@@ -63,13 +65,13 @@ public final class ElevatorController {
 	 * @return
 	 * 
 	 */
-	public static ElevatorController getInstance(ArrayList<ElevatorImpl> _elevatorList) {
+	public static ElevatorController getInstance(ArrayList<Elevator> arrayList) {
 		
 		if (controllerInstance == null) {
 			synchronized (ElevatorController.class) {
 				if (controllerInstance == null) {
 					controllerInstance = new ElevatorController();
-					elevatorList = _elevatorList;
+					elevatorList = arrayList;
 				}
 			}
 		}
@@ -122,7 +124,7 @@ public final class ElevatorController {
 	 * @return		The ElevatorImpl that is being requested.
 	 * 
 	 */
-	public ElevatorImpl getElevator(int i) {
+	public Elevator getElevator(int i) {
 		
 		return elevatorList.get(i - 1);
 	}

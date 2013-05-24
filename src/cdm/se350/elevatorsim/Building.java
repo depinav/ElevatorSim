@@ -8,14 +8,15 @@ import java.util.Date;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import cdm.se350.elevatorsim.elevator.ElevatorImpl;
+import cdm.se350.elevatorsim.elevator.ElevatorFactory;
+import cdm.se350.elevatorsim.elevator.RegElevator;
+import cdm.se350.elevatorsim.interfaces.Elevator;
 
 
 public class Building {
 	
 	private static ArrayList<Floor> floorList = new ArrayList<Floor>();
-	private static ArrayList<ElevatorImpl> elevatorList = new ArrayList<ElevatorImpl>();
+	private static ArrayList<Elevator> elevatorList = new ArrayList<Elevator>();
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	private Date date = new Date();
 	
@@ -38,13 +39,14 @@ public class Building {
 		}
 		
 		for (int j = 0; j < elevators; j++){
-			elevatorList.add(new ElevatorImpl(j, floorList.size()));
+			ElevatorFactory elevatorFactory = new ElevatorFactory();
+			elevatorList.add(elevatorFactory.getElevator("Regular", j, floorList.size()));
 		}
 		
 		System.out.println(dateFormat.format(date) + "\tBuilding created with " + floors + " floors and " + elevators + " elevators");
 	}
 	
-	public ArrayList<ElevatorImpl> getElevatorList() {
+	public ArrayList<Elevator> getElevatorList() {
 		
 		return elevatorList;
 	}

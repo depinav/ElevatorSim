@@ -5,11 +5,11 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import cdm.se350.elevatorsim.elevator.ElevatorImpl;
+import cdm.se350.elevatorsim.elevator.RegElevator;
 
 public class ElevatorImplTest extends TestCase {
 	
-	ElevatorImpl elevator;
+	RegElevator elevator;
 	@Test
 	public void test() {
 		fail("Not yet implemented");
