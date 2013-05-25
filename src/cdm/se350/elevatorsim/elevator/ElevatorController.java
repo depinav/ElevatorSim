@@ -65,17 +65,21 @@ public final class ElevatorController {
 	 * @return
 	 * 
 	 */
-	public static ElevatorController getInstance(ArrayList<Elevator> arrayList) {
+	public static ElevatorController getInstance() {
 		
 		if (controllerInstance == null) {
 			synchronized (ElevatorController.class) {
 				if (controllerInstance == null) {
 					controllerInstance = new ElevatorController();
-					elevatorList = arrayList;
 				}
 			}
 		}
 		return controllerInstance;
+	}
+	
+	public void setElevatorList(ArrayList<Elevator> arrayList) {
+		
+		elevatorList = arrayList;
 	}
 	
 	/**
@@ -127,5 +131,9 @@ public final class ElevatorController {
 	public Elevator getElevator(int i) {
 		
 		return elevatorList.get(i - 1);
+	}
+	
+	public void request(int floor, String dir) {
+		
 	}
 }

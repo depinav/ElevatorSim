@@ -23,27 +23,39 @@ public class Building {
 	public Building (int floors, int elevators){
 		
 		try{
-			if (floors <= 0) throw new IllegalArgumentException("Floors requires a value greater than 0: " + floors);
+			if (floors <= 0) 
+				throw new IllegalArgumentException("Floors requires a value greater than 0: " + floors);
+			else
+				this.setFloors(floors);
 		}catch (Exception flrError){
 			System.out.println("Error: " + flrError.getMessage());
 		}
 		
 		try{
-			if (elevators <= 0) throw new IllegalArgumentException("Elevators requires a value greater than 0: " + elevators);
+			if (elevators <= 0) 
+				throw new IllegalArgumentException("Elevators requires a value greater than 0: " + elevators);
+			else
+				this.setElevators(elevators);
 		}catch (Exception eleError){
 			System.out.println("Error: " + eleError.getMessage());
 		}
 		
-		for (int i = 0; i < floors; i++){
+		System.out.println(dateFormat.format(date) + "\tBuilding created with " + floors + " floors and " + elevators + " elevators");
+	}
+	
+	private void setFloors(int totalFloors) {
+		
+		for (int i = 0; i < totalFloors; i++){
 			  floorList.add(new Floor());
 		}
+	}
+	
+	private void setElevators(int totalElevators) {
 		
-		for (int j = 0; j < elevators; j++){
+		for (int j = 0; j < totalElevators; j++){
 			ElevatorFactory elevatorFactory = new ElevatorFactory();
 			elevatorList.add(elevatorFactory.getElevator("Regular", j, floorList.size()));
 		}
-		
-		System.out.println(dateFormat.format(date) + "\tBuilding created with " + floors + " floors and " + elevators + " elevators");
 	}
 	
 	public ArrayList<Elevator> getElevatorList() {

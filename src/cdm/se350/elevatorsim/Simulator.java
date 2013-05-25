@@ -9,7 +9,8 @@ public class Simulator {
 		int scale = 2;
 		Building myBuilding = new Building(15, 6); // Floors, Elevators
 		myBuilding.setScale(scale);
-		ElevatorController controller = ElevatorController.getInstance(myBuilding.getElevatorList());
+		ElevatorController controller = ElevatorController.getInstance();
+		controller.setElevatorList(myBuilding.getElevatorList());
 		controller.startElevators();
 		controller.sendRequest(1, 11);
 		Thread.sleep(6000/scale);

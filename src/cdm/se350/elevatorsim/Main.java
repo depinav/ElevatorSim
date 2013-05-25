@@ -1,6 +1,5 @@
 package cdm.se350.elevatorsim;
 
-import cdm.se350.elevatorsim.elevator.ElevatorController;
 
 public class Main {
 

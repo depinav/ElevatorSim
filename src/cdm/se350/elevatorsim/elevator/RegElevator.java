@@ -9,9 +9,7 @@ import java.util.PriorityQueue;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
 import cdm.se350.elevatorsim.Building;
-import cdm.se350.elevatorsim.Building.BuildingTest;
 import cdm.se350.elevatorsim.interfaces.Elevator;
 import cdm.se350.elevatorsim.interfaces.TimeInt;
 
