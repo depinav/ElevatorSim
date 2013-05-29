@@ -22,7 +22,13 @@ public class HieldAlgorithmPending {
 						farFloor = key;
 					}
 				}
+				controller.sendRequest(i,farFloor);
 				//code to put send this request for the new farFloor and maybe sending all other requests with matching directions
+				for (Integer key : pendList.keySet() ) {
+					if (key > farFloor && dir == "Up" || key < farFloor && dir == "Down"){
+						controller.sendRequest(i, key);
+					}
+				}
 			}
 		}
 	}
