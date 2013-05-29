@@ -38,4 +38,8 @@ public interface Elevator extends Runnable{
 	void setScaled(long _scaled);
 
 	void stop();
+
+	int getCurrFloor();
+
+	String getTravelDir();
 }

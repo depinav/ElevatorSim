@@ -133,6 +133,10 @@ public final class ElevatorController {
 		return elevatorList.get(i - 1);
 	}
 	
+	public ArrayList<Elevator> getElevatorList(){
+		return elevatorList;
+	}
+	
 	public void request(int floor, String dir) {
 		
 	}
