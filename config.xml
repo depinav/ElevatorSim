@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+  <settings>
+    <floors>15</floors>
+    <elevators>6</elevators>
+    <persons>2</persons>
+    <seconds>10</seconds>
+  </settings>
+</config>
