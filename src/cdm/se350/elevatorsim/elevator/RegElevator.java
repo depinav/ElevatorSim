@@ -102,6 +102,14 @@ public class RegElevator implements Elevator, Runnable, TimeInt {
 		return destList;
 	}
 	
+	public int getCurrFloor(){
+		return currFloor;
+	}
+	
+	public String getTravelDir(){
+		return travelDir;
+	}
+	
 	/**
 	 * 
 	 * A method in order to add a destination to the elevators destination list.
