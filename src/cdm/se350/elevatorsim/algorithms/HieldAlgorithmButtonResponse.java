@@ -32,7 +32,7 @@ public class HieldAlgorithmButtonResponse {
 				controller.sendRequest(i, floor);
 				
 			}else{
-				controller.addPendDest(floor);
+				controller.addPendDest(floor, dir);
 			}
 		}
 	}
