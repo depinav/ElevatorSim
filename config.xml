@@ -4,6 +4,8 @@
     <floors>15</floors>
     <elevators>6</elevators>
     <persons>2</persons>
+    <scale>1</scale>
     <seconds>10</seconds>
+    <time>30</time>
   </settings>
 </config>

@@ -47,6 +47,10 @@ public class RegElevator implements Elevator, Runnable, Time {
 	private static final int IDLING = 3;
 	private static final int STOPPED = 4;
 	
+	private long timerStart;
+	private long timerEnd;
+	private boolean timerStarted = false;
+	
 	Building building = Building.getInstance();
 
 	/**
@@ -202,6 +206,11 @@ public class RegElevator implements Elevator, Runnable, Time {
 		return sec * 1000;
 	}
 	
+	public long toSec(long milli) {
+		
+		return milli / 1000;
+	}
+	
 	/**
 	 * 
 	 * Used to set the scale for the speed of the running time
@@ -225,6 +234,24 @@ public class RegElevator implements Elevator, Runnable, Time {
 		
 		return unscaled / scaled;
 	}
+	
+	public void startTimer() {
+		
+		timerStart = System.currentTimeMillis();
+		timerStarted = true;
+	}
+	
+	public void countTimer() {
+		
+		timerEnd = System.currentTimeMillis();
+	}
+	
+	public void endTimer() {
+		
+		timerEnd = System.currentTimeMillis();
+		long totalTime = this.toSec(timerEnd - timerStart);
+		timerStarted = false;
+	}
 
 	public void run() {
 
@@ -246,9 +273,15 @@ public class RegElevator implements Elevator, Runnable, Time {
 			
 			if (!destList.isEmpty()){
 				
+				if(!timerStarted) {
+					this.startTimer();
+				}
+				
 				if(currFloor == destList.peek()) {
 					
+					
 					System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " reached destination: Floor " + currFloor);
+					this.endTimer();
 					try {
 						this.arrived();
 					} catch (InterruptedException e) {
@@ -267,6 +300,8 @@ public class RegElevator implements Elevator, Runnable, Time {
 						currFloor++;
 					if (travelDir.equals("Down"))
 						currFloor--;
+					
+					//movingTimeEnd = System.currentTimeMillis();
 				}
 				
 			} else if (state != STOPPED){

@@ -20,6 +20,10 @@ public final class Building implements Time {
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	private volatile static Building buildingInstance;
 	
+	private long timerStart;
+	private long timerEnd;
+	private boolean timerStarted = false;
+	
 	public Building (){ System.out.println(dateFormat.format(new Date()) + "\tBuilding created with: "); }
 	
 	public static Building getInstance() {
@@ -93,9 +97,9 @@ public final class Building implements Time {
 		System.out.println(dateFormat.format(new Date()) + "\tScale set to " + _scaled + ":1");
 	}
 	
-	public void addPersons(int people, long sec) {
+	public void addPersons(int people) {
 		
-		floor.createPeople(people, sec);
+		floor.createPeople(people);
 	}
 	
 	public void startPeople() {
@@ -111,6 +115,26 @@ public final class Building implements Time {
 	public long toMilli(long sec) {
 		
 		return sec * 1000;
+	}
+	
+	public long toSec(long milli) {
+		
+		return milli / 1000;
+	}
+	
+	public void startTimer() {
+		
+		timerStart = System.currentTimeMillis();
+	}
+	
+	public void countTimer() {
+		
+		timerEnd = System.currentTimeMillis();
+	}
+	
+	public void endTimer() {
+		
+		
 	}
 	
 	

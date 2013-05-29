@@ -37,7 +37,7 @@ public class Floor {
 		
 	}
 	
-	public void createPeople(int people, long seconds) {
+	public void createPeople(int people) {
 		
 		Random ran = new Random();
 		

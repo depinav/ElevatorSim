@@ -16,10 +16,14 @@ public class Main {
 		String strEl = "";
 		String strPpl = "";
 		String strSec = "";
+		String strScale = "";
+		String strTime = "";
 		int floors = 0;
 		int elevators = 0;
 		int people = 0;
+		int scale = 0;
 		long seconds = 0;
+		long time = 0;
 		
 		try {
 			
@@ -29,11 +33,8 @@ public class Main {
 			Document doc = dBuilder.parse(configXML);
 			doc.getDocumentElement().normalize();
 			
-			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-			
 			NodeList nList = doc.getElementsByTagName("settings");
 			Node nNode = nList.item(0);
-			System.out.println("\nCurrent Element :" + nNode.getNodeName());
 			
 			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 				 
@@ -42,7 +43,9 @@ public class Main {
 				strFl = eElement.getElementsByTagName("floors").item(0).getTextContent();
 				strEl = eElement.getElementsByTagName("elevators").item(0).getTextContent();
 				strPpl = eElement.getElementsByTagName("persons").item(0).getTextContent();
+				strScale = eElement.getElementsByTagName("scale").item(0).getTextContent();
 				strSec = eElement.getElementsByTagName("seconds").item(0).getTextContent();
+				strTime = eElement.getElementsByTagName("time").item(0).getTextContent();
 	 
 			}
 		} catch (Exception e) {
@@ -53,9 +56,11 @@ public class Main {
 		floors = Integer.parseInt(strFl);
 		elevators = Integer.parseInt(strEl);
 		people = Integer.parseInt(strPpl);
+		scale = Integer.parseInt(strScale);
 		seconds = Long.parseLong(strSec);
+		time = Long.parseLong(strTime);
 		
-		Simulator simulate = new Simulator(floors, elevators, people, seconds);
+		Simulator simulate = new Simulator(floors, elevators, people, scale, seconds, time);
 		simulate.run();
 	}
 }

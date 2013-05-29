@@ -19,4 +19,12 @@ public interface Time {
 	 * 
 	 */
 	long toMilli(long sec);
+	
+	long toSec(long milli);
+	
+	void startTimer();
+	
+	void endTimer();
+	
+	void countTimer();
 }
