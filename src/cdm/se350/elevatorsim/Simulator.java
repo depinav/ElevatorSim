@@ -55,7 +55,6 @@ public class Simulator implements Time {
 		controller.stopElevators();
 	}
 
-	@Override
 	public long toMilli(long sec) {
 		
 		return sec * 1000;
