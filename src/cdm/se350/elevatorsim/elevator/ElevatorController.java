@@ -4,6 +4,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
 
 import cdm.se350.elevatorsim.interfaces.Elevator;
 
@@ -29,6 +33,10 @@ public final class ElevatorController {
 	private volatile static ElevatorController controllerInstance;
 	private static ArrayList<Elevator> elevatorList;
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+	
+	//private ArrayList<Integer> pendingList = new ArrayList<Integer>();
+	
+	private Map<Integer, String> pendingList = new HashMap<Integer, String>();
 	
 	private ElevatorController(){};
 	
@@ -56,6 +64,14 @@ public final class ElevatorController {
 	
 	public void getFloorList() {
 		
+	}
+	
+	public Map<Integer, String> getPendingList(){
+		return pendingList;
+	}
+	
+	public void addPendDest( int pendDest, String dir ) {
+		pendingList.put(pendDest, dir);
 	}
 	
 	/**
