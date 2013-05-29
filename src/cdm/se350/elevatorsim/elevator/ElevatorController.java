@@ -13,7 +13,7 @@ import cdm.se350.elevatorsim.interfaces.Elevator;
  * including, sendRequest, startElevators and stopElevators.
  * This is a Singleton class
  * <pre>
- * ElevatorController controller = ElevatorController.getInstance(myBuilding.getElevatorList());
+ * ElevatorController controller = ElevatorController.getInstance();
  * </pre>
  * 
  * @author 		Victor DePina

@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import cdm.se350.elevatorsim.Building;
 import cdm.se350.elevatorsim.interfaces.Elevator;
-import cdm.se350.elevatorsim.interfaces.TimeInt;
+import cdm.se350.elevatorsim.interfaces.Time;
 
 /**
  * 
@@ -25,7 +25,7 @@ import cdm.se350.elevatorsim.interfaces.TimeInt;
  * 
  */
 
-public class RegElevator implements Elevator, Runnable, TimeInt {
+public class RegElevator implements Elevator, Runnable, Time {
 	
 	private String travelDir;
 	private static final int DEFAULT = 1;
@@ -46,6 +46,8 @@ public class RegElevator implements Elevator, Runnable, TimeInt {
 	private static final int TRAVELING = 2;
 	private static final int IDLING = 3;
 	private static final int STOPPED = 4;
+	
+	Building building = Building.getInstance();
 
 	/**
 	 * 
@@ -153,6 +155,8 @@ public class RegElevator implements Elevator, Runnable, TimeInt {
 			if (state == TODEFAULT) {
 				this.setState(IDLING);
 			} else {
+				//building.getFloorList().get(currFloor).ding();
+				this.notifyAll();
 				System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " doors opening...");
 				Thread.sleep(this.getScaled(this.toMilli(doorOpenTime)));
 				System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " doors closing...");
@@ -222,7 +226,6 @@ public class RegElevator implements Elevator, Runnable, TimeInt {
 				if (destList.isEmpty()) {
 					try {
 						if (currFloor != DEFAULT) {
-							//System.out.println(this.getScaled(this.toMilli(maxIdleTime)));
 							this.wait(this.getScaled(this.toMilli(maxIdleTime)));
 						}
 						else
@@ -266,7 +269,7 @@ public class RegElevator implements Elevator, Runnable, TimeInt {
 		}
 	}
 	
-	public static class ElevatorImplTest extends TestCase {
+	/*public static class ElevatorImplTest extends TestCase {
 		private RegElevator elevatorImpl = null;
 		private Building building = null;
 		
@@ -352,5 +355,5 @@ public class RegElevator implements Elevator, Runnable, TimeInt {
 			}
 		}
 		
-	}
+	} */
 }

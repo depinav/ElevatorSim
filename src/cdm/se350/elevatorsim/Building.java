@@ -4,58 +4,75 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import cdm.se350.elevatorsim.elevator.ElevatorFactory;
-import cdm.se350.elevatorsim.elevator.RegElevator;
+import cdm.se350.elevatorsim.factories.ElevatorFactory;
 import cdm.se350.elevatorsim.interfaces.Elevator;
+import cdm.se350.elevatorsim.interfaces.Time;
 
 
-public class Building {
+public final class Building implements Time {
 	
-	private static ArrayList<Floor> floorList = new ArrayList<Floor>();
+	//private static ArrayList<Floor> floorList = new ArrayList<Floor>();
+	private static Floor floor = null;
+	private static int floors;
 	private static ArrayList<Elevator> elevatorList = new ArrayList<Elevator>();
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-	private Date date = new Date();
+	private volatile static Building buildingInstance;
 	
-	public Building (int floors, int elevators){
+	public Building (){ System.out.println(dateFormat.format(new Date()) + "\tBuilding created with: "); }
+	
+	public static Building getInstance() {
+
+		if (buildingInstance == null) {
+			synchronized (Building.class) {
+				if (buildingInstance == null) {
+					buildingInstance = new Building();
+				}
+			}
+		}
+		return buildingInstance;
+	}
+	
+	public void setFloors(int totalFloors) {
+		
 		
 		try{
-			if (floors <= 0) 
-				throw new IllegalArgumentException("Floors requires a value greater than 0: " + floors);
-			else
-				this.setFloors(floors);
+			if (totalFloors <= 0) 
+				throw new IllegalArgumentException("Floors requires a value greater than 0: " + totalFloors);
+			else {
+				floors = totalFloors;
+				floor = new Floor();
+//				for (int i = 0; i < totalFloors; i++)
+//					  floorList.add(new Floor());
+			}
 		}catch (Exception flrError){
 			System.out.println("Error: " + flrError.getMessage());
 		}
 		
+		System.out.println(dateFormat.format(new Date()) + "\t" +  totalFloors + " Floors");
+	}
+	
+	public Floor getFloor() {
+		
+		return floor;
+	}
+	
+	public void setElevators(int totalElevators) {
+		
 		try{
-			if (elevators <= 0) 
-				throw new IllegalArgumentException("Elevators requires a value greater than 0: " + elevators);
+			if (totalElevators <= 0) 
+				throw new IllegalArgumentException("Elevators requires a value greater than 0: " + totalElevators);
 			else
-				this.setElevators(elevators);
+				for (int j = 0; j < totalElevators; j++){
+					ElevatorFactory elevatorFactory = new ElevatorFactory();
+					elevatorList.add(elevatorFactory.getElevator("Regular", j, floors/*floorList.size()*/));
+				}
 		}catch (Exception eleError){
 			System.out.println("Error: " + eleError.getMessage());
 		}
 		
-		System.out.println(dateFormat.format(date) + "\tBuilding created with " + floors + " floors and " + elevators + " elevators");
-	}
-	
-	private void setFloors(int totalFloors) {
-		
-		for (int i = 0; i < totalFloors; i++){
-			  floorList.add(new Floor());
-		}
-	}
-	
-	private void setElevators(int totalElevators) {
-		
-		for (int j = 0; j < totalElevators; j++){
-			ElevatorFactory elevatorFactory = new ElevatorFactory();
-			elevatorList.add(elevatorFactory.getElevator("Regular", j, floorList.size()));
-		}
+		System.out.println(dateFormat.format(new Date()) + "\t" +  totalElevators + " Elevators");
 	}
 	
 	public ArrayList<Elevator> getElevatorList() {
@@ -63,8 +80,9 @@ public class Building {
 		return elevatorList;
 	}
 	
-	public ArrayList<Floor> getFloorList() {
-		return floorList;
+	public int getFloorList() {
+		
+		return floors;
 	}
 	
 	public void setScale(long _scaled) {
@@ -72,11 +90,31 @@ public class Building {
 		for (int i = 0; i < elevatorList.size(); i++)
 			elevatorList.get(i).setScaled(_scaled);
 		
-		System.out.println(dateFormat.format(date) + "\tScale set to " + _scaled + ":1");
+		System.out.println(dateFormat.format(new Date()) + "\tScale set to " + _scaled + ":1");
+	}
+	
+	public void addPersons(int people, long sec) {
+		
+		floor.createPeople(people, sec);
+	}
+	
+	public void startPeople() {
+		
+		floor.runPeople();
+	}
+	
+	public void stopPeople() {
+		
+		floor.endPeople();
+	}
+
+	public long toMilli(long sec) {
+		
+		return sec * 1000;
 	}
 	
 	
-	public static class BuildingTest extends TestCase {
+	/*public static class BuildingTest extends TestCase {
 		private Building building = null;
 		
 		public BuildingTest (String name) throws Exception {
@@ -122,5 +160,5 @@ public class Building {
 				return;
 			}
 		}
-	}
+	} */
 }

@@ -1,34 +1,64 @@
 package cdm.se350.elevatorsim;
 
 import cdm.se350.elevatorsim.elevator.ElevatorController;
+import cdm.se350.elevatorsim.interfaces.Time;
 
-public class Simulator {
+public class Simulator implements Time {
+	
+	private int floors;
+	private int elevators;
+	private int people;
+	private long seconds;
+	
+	public Simulator(int _floors, int _elevators, int _people, long _seconds) {
+		
+		setFloors(_floors);
+		setElevators(_elevators);
+		setPeople(_people);
+		setSeconds(_seconds);
+	}
+	
+	private void setFloors(int numFl) {
+		
+		floors = numFl;
+	}
+	
+	private void setElevators(int numElevators) {
+		
+		elevators = numElevators;
+	}
+	
+	private void setPeople(int numPeople) {
+		
+		people = numPeople;
+	}
+	
+	private void setSeconds(long totalSecs) {
+		
+		seconds = totalSecs;
+	}
 	
 	public void run() throws InterruptedException {
 		
 		int scale = 2;
-		Building myBuilding = new Building(15, 6); // Floors, Elevators
-		myBuilding.setScale(scale);
+		Building building = Building.getInstance();
+		building.setFloors(floors);
+		building.setElevators(elevators);
+		building.addPersons(people, seconds);
+		building.setScale(scale);
 		ElevatorController controller = ElevatorController.getInstance();
-		controller.setElevatorList(myBuilding.getElevatorList());
+		controller.setElevatorList(building.getElevatorList());
 		controller.startElevators();
-		controller.sendRequest(1, 11);
-		Thread.sleep(6000/scale);
-		controller.sendRequest(3, 14);
-		Thread.sleep(1000/scale);
-		controller.sendRequest(3, 13);
-		Thread.sleep(2000/scale);
-		controller.sendRequest(3, 15);
-		Thread.sleep(6000/scale);
-		controller.sendRequest(5, 10);
-		Thread.sleep(2000/scale);
-		controller.sendRequest(5, 1);
-		Thread.sleep(25000/scale);
-		controller.sendRequest(5, 5);
-		Thread.sleep(1000/scale);
-		controller.sendRequest(5, 3);
-		Thread.sleep(30000/scale);
+		building.startPeople();
+		Thread.sleep(5000);
+		building.stopPeople();
 		controller.stopElevators();
+	}
+
+	@Override
+	public long toMilli(long sec) {
+		
+		return sec * 1000;
 	}
 
 }

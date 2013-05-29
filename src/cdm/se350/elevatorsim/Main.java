@@ -5,7 +5,7 @@ public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
 		
-		Simulator simulate = new Simulator();
+		Simulator simulate = new Simulator(15, 6, 3, 10);
 		simulate.run();
 	}
 }
