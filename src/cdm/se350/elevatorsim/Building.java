@@ -117,9 +117,12 @@ public final class Building implements Time {
 		return sec * 1000;
 	}
 	
-	public long toSec(long milli) {
+	public long toSec(String kind, long init) {
 		
-		return milli / 1000;
+		if(kind.equalsIgnoreCase("milli"))
+			return init / 1000;
+		else
+			return init / 1000000000;
 	}
 	
 	public void startTimer() {
@@ -134,7 +137,11 @@ public final class Building implements Time {
 	
 	public void endTimer() {
 		
+	}
+	
+	public long toNano(long sec) {
 		
+		return sec * 1000000000;
 	}
 	
 	

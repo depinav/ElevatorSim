@@ -1,5 +1,9 @@
 package cdm.se350.elevatorsim;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import cdm.se350.elevatorsim.elevator.ElevatorController;
 import cdm.se350.elevatorsim.interfaces.Time;
 
@@ -11,12 +15,17 @@ public class Simulator implements Time {
 	private long seconds;
 	private long time;
 	private int scale;
+	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+	
+	private long p;
 	
 	private long timerStart;
 	private long timerEnd;
 	private long totalTime;
+	private long subTimeStart;
 	private long totalSubTime;
 	private boolean timerStarted = false;
+	private boolean subTimerStarted = false;
 	private boolean totalTimerPassed = false;
 	
 	public Simulator(int _floors, int _elevators, int _people, int _scale, long _seconds, long _time) {
@@ -74,24 +83,26 @@ public class Simulator implements Time {
 			if(!timerStarted)
 				this.startTimer();
 			
-			this.countTimer();
-			totalSubTime = 0;
-			
-			while(this.toSec(totalSubTime) <= seconds) {
-				
-				this.countTimer();
-				if(System.currentTimeMillis() != totalSubTime)
-					System.out.println("Still counting" + this.toSec(totalSubTime));
+			if (!subTimerStarted) {
+				subTimeStart = System.nanoTime();
+				subTimerStarted = true;
 			}
 			
-//			System.out.println("Creating a person");
-			//building.addPersons(people);
-			//building.startPeople();
+			this.countTimer();
+			
+			totalSubTime = System.nanoTime() - subTimeStart;
+			if (totalSubTime > (p = this.toNano(seconds))) {
+				
+				building.addPersons(people);
+				building.startPeople();
+				subTimerStarted = false;
+			}
+			
 			if(totalTime > time)
 				totalTimerPassed = true;
+			
 		}
-		
-		System.out.println("Out");
+
 		building.stopPeople();
 		controller.stopElevators();
 	}
@@ -101,28 +112,33 @@ public class Simulator implements Time {
 		return sec * 1000;
 	}
 	
-	public long toSec(long milli) {
+	public long toNano(long sec) {
 		
-		return milli / 1000;
+		return sec * 1000000000;
+	}
+	
+	public long toSec(String kind, long init) {
+		
+		if(kind.equalsIgnoreCase("milli"))
+			return init / 1000;
+		else
+			return init / 1000000000;
 	}
 	
 	public void startTimer() {
 		
-		timerStart = System.currentTimeMillis();
+		timerStart = System.nanoTime();
 		timerStarted = true;
 	}
 	
 	public void countTimer() {
 		
-		timerEnd = System.currentTimeMillis();
-		totalTime = this.toSec(timerEnd - timerStart);
-		totalSubTime = System.currentTimeMillis() - totalSubTime;
+		timerEnd = System.nanoTime();
+		totalTime = this.toSec("nano" , timerEnd - timerStart);
 	}
 	
 	public void endTimer() {
 		
-		timerEnd = System.currentTimeMillis();
-		totalTime = this.toSec(timerEnd - timerStart);
 		timerStarted = false;
 	}
 

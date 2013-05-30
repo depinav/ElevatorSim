@@ -206,9 +206,12 @@ public class RegElevator implements Elevator, Runnable, Time {
 		return sec * 1000;
 	}
 	
-	public long toSec(long milli) {
+	public long toSec(String kind, long init) {
 		
-		return milli / 1000;
+		if(kind.equalsIgnoreCase("milli"))
+			return init / 1000;
+		else
+			return init / 1000000000;
 	}
 	
 	/**
@@ -249,7 +252,7 @@ public class RegElevator implements Elevator, Runnable, Time {
 	public void endTimer() {
 		
 		timerEnd = System.currentTimeMillis();
-		long totalTime = this.toSec(timerEnd - timerStart);
+		long totalTime = this.toSec("nano", timerEnd - timerStart);
 		timerStarted = false;
 	}
 
@@ -310,6 +313,11 @@ public class RegElevator implements Elevator, Runnable, Time {
 				this.setState(TODEFAULT);
 			}
 		}
+	}
+
+	public long toNano(long sec) {
+		
+		return sec * 1000000000;
 	}
 	
 	/*public static class ElevatorImplTest extends TestCase {

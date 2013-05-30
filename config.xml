@@ -5,7 +5,7 @@
     <elevators>6</elevators>
     <persons>2</persons>
     <scale>1</scale>
-    <seconds>10</seconds>
+    <seconds>4</seconds>
     <time>30</time>
   </settings>
 </config>

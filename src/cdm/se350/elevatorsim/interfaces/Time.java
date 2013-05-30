@@ -20,7 +20,9 @@ public interface Time {
 	 */
 	long toMilli(long sec);
 	
-	long toSec(long milli);
+	long toNano(long sec);
+	
+	long toSec(String kind, long milli);
 	
 	void startTimer();
 	
