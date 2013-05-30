@@ -40,10 +40,9 @@ public class Floor {
 	
 	public void createPeople(int people) {
 		
-		Random ran = new Random();
-		
 		for(int i = 0; i < people; i++) {
 			
+			Random ran = new Random();
 			PersonFactory person = new PersonFactory();
 			int destFloor;
 			int initFloor = ran.nextInt(building.getFloorList() - 1) + 1;
