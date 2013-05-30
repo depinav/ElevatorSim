@@ -15,7 +15,8 @@ public class Floor {
 	private ArrayList<Person> peopleList = new ArrayList<Person>();
 	private Building building = Building.getInstance();
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-//	private static int totalPeople = 1;
+	public static int totalPeople = 1;
+	private static int iPeople = 0;
 
 	public Floor (){}
 	
@@ -51,15 +52,16 @@ public class Floor {
 				destFloor = ran.nextInt(building.getFloorList() - 1) + 1;
 			} while(destFloor == initFloor);
 		
-			peopleList.add(person.getPerson("Regular", initFloor, destFloor, i));
-//			totalPeople++;
+			peopleList.add(person.getPerson("Regular", initFloor, destFloor));
+			totalPeople++;
 		}
 	}
 	
 	public void runPeople() {
 		
-		for(Person person : peopleList) {
-			(new Thread(person)).start();
+		for(; iPeople < peopleList.size(); iPeople++) {
+			
+			new Thread(peopleList.get(iPeople)).start();
 		}
 	}
 	

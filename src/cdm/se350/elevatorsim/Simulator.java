@@ -102,7 +102,8 @@ public class Simulator implements Time {
 				totalTimerPassed = true;
 			
 		}
-
+		
+		Thread.sleep(10000);
 		building.stopPeople();
 		controller.stopElevators();
 	}

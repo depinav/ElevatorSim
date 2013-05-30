@@ -5,11 +5,11 @@ import cdm.se350.elevatorsim.interfaces.Person;
 
 public class PersonFactory {
 
-	public Person getPerson(String type, int currFl, int destFl, int num) {
+	public Person getPerson(String type, int currFl, int destFl) {
 		
 		Person person = null;
 		if(type.equals("Regular"))
-			person = new People(currFl, destFl, num);
+			person = new People(currFl, destFl);
 		return person;
 	}
 }

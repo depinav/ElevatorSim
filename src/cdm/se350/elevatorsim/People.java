@@ -15,7 +15,7 @@ public class People implements Person {
 	private int personNo;
 	private boolean active = true;
 	
-	public People(int currFl, int destFl, int num) {
+	public People(int currFl, int destFl) {
 		
 		try {
 			if (currFl <= 0 || currFl > building.getFloorList()) 
@@ -35,7 +35,7 @@ public class People implements Person {
 			System.out.println("Error: " + flrError.getMessage());
 		}
 		
-		this.setPersonNo(num);
+		this.setPersonNo(Floor.totalPeople);
 	}
 	
 	private void setCurr(int current) {
