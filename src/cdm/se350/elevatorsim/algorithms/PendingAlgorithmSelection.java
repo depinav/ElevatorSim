@@ -6,11 +6,11 @@ public class PendingAlgorithmSelection {
 
 	private PendingResponse strategy;
 	
-	public void setRequestResponse(PendingResponse strategy){
+	public void setPendingResponse(PendingResponse strategy){
 		this.strategy = strategy; 
 	}
 	
-	public void selectElevator(int floor, String dir ){
+	public void pending(int floor, String dir ){
 		strategy.PendingRequests(floor, dir);
 	}
 }
@@ -18,7 +18,9 @@ public class PendingAlgorithmSelection {
 /*
 to set algorithm to hield algorithm
 
-PendingAlgorithmSelection hield = new PendingAlgorithmSelection();
-hield.setRequestResponse(new HieldAlgorithmButtonResponse());
+PendingAlgorithmSelection improved = new PendingAlgorithmSelection();
+improved.setRequestResponse(new ImprovedPendingButtonResponse());
+
+improved.pending(floor, dir); --something like this
 
 */

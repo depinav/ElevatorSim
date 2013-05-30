@@ -18,7 +18,7 @@ public class ResponseAlgorithmSelection {
 /*
 to set algorithm to hield algorithm
 
-AlgorithmSelection hield = new AlgorithmSelection();
+ResponseAlgorithmSelection hield = new ResponseAlgorithmSelection();
 hield.setRequestResponse(new HieldAlgorithmButtonResponse());
 
 */
