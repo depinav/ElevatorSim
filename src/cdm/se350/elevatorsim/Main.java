@@ -18,12 +18,14 @@ public class Main {
 		String strSec = "";
 		String strScale = "";
 		String strTime = "";
+		String strAlg = "";
 		int floors = 0;
 		int elevators = 0;
 		int people = 0;
 		int scale = 0;
 		long seconds = 0;
 		long time = 0;
+		int alg = 0;
 		
 		try {
 			
@@ -46,6 +48,7 @@ public class Main {
 				strScale = eElement.getElementsByTagName("scale").item(0).getTextContent();
 				strSec = eElement.getElementsByTagName("seconds").item(0).getTextContent();
 				strTime = eElement.getElementsByTagName("time").item(0).getTextContent();
+				strAlg = eElement.getElementsByTagName("alg").item(0).getTextContent();
 	 
 			}
 		} catch (Exception e) {
@@ -59,8 +62,9 @@ public class Main {
 		scale = Integer.parseInt(strScale);
 		seconds = Long.parseLong(strSec);
 		time = Long.parseLong(strTime);
+		alg = Integer.parseInt(strAlg);
 		
-		Simulator simulate = new Simulator(floors, elevators, people, scale, seconds, time);
+		Simulator simulate = new Simulator(floors, elevators, people, scale, seconds, time, alg);
 		simulate.run();
 	}
 }

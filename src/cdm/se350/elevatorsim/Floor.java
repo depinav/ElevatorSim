@@ -54,7 +54,7 @@ public class Floor {
 		
 			peopleList.add(person.getPerson("Regular", initFloor, destFloor));
 			totalPeople++;
-		}
+		}		
 	}
 	
 	public void runPeople() {

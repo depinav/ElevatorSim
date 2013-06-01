@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import cdm.se350.elevatorsim.elevator.ElevatorController;
+import cdm.se350.elevatorsim.interfaces.PendingResponse;
 
-public class HieldAlgorithmPending {
+public class HieldAlgorithmPending implements PendingResponse{
 	
 	ElevatorController controller = ElevatorController.getInstance();
 	
 	Map<Integer, String> pendList = controller.getPendingList();
 	
-	void PendingRequests(int floor, String dir){
+	public void PendingRequests(int floor, String dir){
 		
 		int farFloor = 0;
 			

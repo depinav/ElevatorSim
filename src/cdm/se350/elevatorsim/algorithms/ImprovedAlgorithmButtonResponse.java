@@ -1,6 +1,8 @@
 package cdm.se350.elevatorsim.algorithms;
 
 import cdm.se350.elevatorsim.elevator.ElevatorController;
+import cdm.se350.elevatorsim.interfaces.RequestResponse;
+
 import java.util.PriorityQueue;
 
 /**
@@ -12,11 +14,11 @@ import java.util.PriorityQueue;
  * 
  */
 
-public class ImprovedAlgorithmButtonResponse {
+public class ImprovedAlgorithmButtonResponse implements RequestResponse {
 
 	ElevatorController controller = ElevatorController.getInstance();
 	
-	void ElevatorRequest(int floor, String dir){
+	public void ElevatorRequest(int floor, String dir){
 		
 		for (int i = 1; i <= controller.getElevatorList().size(); i++){
 			

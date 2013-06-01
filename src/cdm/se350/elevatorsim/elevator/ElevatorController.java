@@ -9,8 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+import cdm.se350.elevatorsim.factories.ElevatorFactory;
 import cdm.se350.elevatorsim.interfaces.Elevator;
-
+import cdm.se350.elevatorsim.interfaces.RequestResponse;
+import cdm.se350.elevatorsim.algorithms.*;
+import cdm.se350.elevatorsim.factories.AlgorithmPendingFactory;
+import cdm.se350.elevatorsim.factories.AlgorithmRequestFactory;
 /**
  * 
  * The ElevatorController class is used to control the requests sent to a collection of elevators
@@ -34,6 +38,9 @@ public final class ElevatorController {
 	private static ArrayList<Elevator> elevatorList;
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	
+	ResponseAlgorithmSelection requestAlg = null;
+	//PendingAlgorithmSelection pendingAlg = null;
+	
 	//private ArrayList<Integer> pendingList = new ArrayList<Integer>();
 	
 	private Map<Integer, String> pendingList = new HashMap<Integer, String>();
@@ -44,6 +51,8 @@ public final class ElevatorController {
 	 * 
 	 * Return the direction of the elevator currently looked at.
 	 * @return The string representing the direction.
+	 * 
+	 * 
 	 * 
 	 */
 	public String getDirection() {
@@ -93,6 +102,14 @@ public final class ElevatorController {
 		return controllerInstance;
 	}
 	
+	public void setAlg(int alg){
+		AlgorithmRequestFactory requestFactory = new AlgorithmRequestFactory();
+		requestAlg = requestFactory.getRequestResponse(alg);
+		AlgorithmPendingFactory pendingFactory = new AlgorithmPendingFactory();
+		PendingAlgorithmSelection pendingAlg = pendingFactory.getPendingResponse(alg);
+		
+	}
+	
 	public void setElevatorList(ArrayList<Elevator> arrayList) {
 		
 		elevatorList = arrayList;
@@ -109,7 +126,7 @@ public final class ElevatorController {
 		
 		elevatorList.get(elevator - 1).addDest(dest);
 	}
-	
+
 	/**
 	 * 
 	 * Start all the elevators in their individual threads.
@@ -146,7 +163,7 @@ public final class ElevatorController {
 	 */
 	public Elevator getElevator(int i) {
 		
-		return elevatorList.get(i - 1);
+		return elevatorList.get(i);
 	}
 	
 	public ArrayList<Elevator> getElevatorList(){
@@ -154,6 +171,7 @@ public final class ElevatorController {
 	}
 	
 	public void request(int floor, String dir) {
-		
+		requestAlg.selectElevator(floor, dir);
 	}
+	
 }
