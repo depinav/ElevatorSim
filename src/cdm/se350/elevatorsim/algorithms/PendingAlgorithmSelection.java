@@ -12,8 +12,10 @@ public class PendingAlgorithmSelection {
 	
 	public void pending(int floor, String dir ){
 		strategy.PendingRequests(floor, dir);
-	}
+	}	
 }
+
+
 
 /*
 to set algorithm to hield algorithm

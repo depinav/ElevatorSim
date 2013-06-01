@@ -7,5 +7,6 @@
     <scale>1</scale>
     <seconds>4</seconds>
     <time>30</time>
+	<alg>1</alg>
   </settings>
 </config>

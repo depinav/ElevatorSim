@@ -14,6 +14,7 @@ public class Simulator implements Time {
 	private int people;
 	private long seconds;
 	private long time;
+	private int alg;
 	private int scale;
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	
@@ -26,7 +27,7 @@ public class Simulator implements Time {
 	private boolean subTimerStarted = false;
 	private boolean totalTimerPassed = false;
 	
-	public Simulator(int _floors, int _elevators, int _people, int _scale, long _seconds, long _time) {
+	public Simulator(int _floors, int _elevators, int _people, int _scale, long _seconds, long _time, int _alg) {
 		
 		setFloors(_floors);
 		setElevators(_elevators);
@@ -34,6 +35,7 @@ public class Simulator implements Time {
 		setScaled(_scale);
 		setSeconds(_seconds);
 		setTime(_time);
+		setAlg(_alg);
 	}
 	
 	private void setFloors(int numFl) {
@@ -66,6 +68,11 @@ public class Simulator implements Time {
 		time = theTime;
 	}
 	
+	private void setAlg(int theAlg){
+		
+		alg = theAlg;
+	}
+	
 	public void run() throws InterruptedException {
 		
 		Building building = Building.getInstance();
@@ -77,7 +84,8 @@ public class Simulator implements Time {
 		
 		controller.setElevatorList(building.getElevatorList());
 		controller.setDefaultFloor(7, 0);
-//		controller.startElevators();
+		controller.setAlg(alg);
+		controller.startElevators();
 		
 		while(!totalTimerPassed) {
 			
@@ -103,7 +111,8 @@ public class Simulator implements Time {
 				totalTimerPassed = true;
 			
 		}
-		
+		building.addPersons(1);
+		building.startPeople();
 		Thread.sleep(10000);
 		building.stopPeople();
 //		controller.stopElevators();

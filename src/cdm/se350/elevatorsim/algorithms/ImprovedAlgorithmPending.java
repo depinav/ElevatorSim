@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import cdm.se350.elevatorsim.elevator.ElevatorController;
+import cdm.se350.elevatorsim.interfaces.PendingResponse;
 
-public class ImprovedAlgorithmPending {
+public class ImprovedAlgorithmPending implements PendingResponse {
 	
 	ElevatorController controller = ElevatorController.getInstance();
 	
