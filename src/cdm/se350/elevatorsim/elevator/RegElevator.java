@@ -28,7 +28,7 @@ import cdm.se350.elevatorsim.interfaces.Time;
 public class RegElevator implements Elevator, Runnable, Time {
 	
 	private String travelDir;
-	private static final int DEFAULT = 1;
+	private int DEFAULT = 1;
 	private int currentOccup;
 	private int maxOccup;
 	private int maxFloors;
@@ -49,6 +49,7 @@ public class RegElevator implements Elevator, Runnable, Time {
 	
 	private long timerStart;
 	private long timerEnd;
+	private long totalTime;
 	private boolean timerStarted = false;
 	
 	Building building = Building.getInstance();
@@ -63,38 +64,79 @@ public class RegElevator implements Elevator, Runnable, Time {
 	 * 
 	 */
 	public RegElevator(int _elevatorNum, int _maxFloors) {
-		
-		doorOpenTime = 5;
-		speed = 1;
-		maxIdleTime = 10;
+
+		int _doorOpenTime = 3;
+		int _speed = 1;
+		int _maxIdleTime = 10;
+		int _maxOccup = 8;
 		elevatorNum = _elevatorNum + 1;
 		currFloor = DEFAULT;
-		maxFloors = _maxFloors;
 		this.setState(IDLING);
 		
 		try{
-			if (doorOpenTime < 0) throw new IllegalArgumentException("doorOpenTime cannot be a negative value: " + doorOpenTime);
+			if (_doorOpenTime < 0) throw new IllegalArgumentException("doorOpenTime cannot be a negative value: " + doorOpenTime);
+			else
+				this.setdoorOpenTime(_doorOpenTime);
 		}catch (Exception DOTError){
 			System.out.println("Error: " + DOTError.getMessage());
 		}
 		
 		try{
-			if (speed <= 0) throw new IllegalArgumentException("Speed requires a value greater than 0: " + speed);
+			if (_speed <= 0) throw new IllegalArgumentException("Speed requires a value greater than 0: " + speed);
+			else
+				this.setSpeed(_speed);
 		}catch (Exception spdError){
 			System.out.println("Error: " + spdError.getMessage());
 		}
 		
 		try{
 			if (maxIdleTime < 0) throw new IllegalArgumentException("maxIdleTime cannot be a negative value: " + maxIdleTime);
+			else
+				this.setMaxIdleTime(_maxIdleTime);
 		}catch (Exception MITError){
 			System.out.println("Error: " + MITError.getMessage());
 		}
 		
 		try{
-			if (maxFloors < 0) throw new IllegalArgumentException("maxFloors cannot be a negative value: " + maxFloors);
+			if (_maxFloors < 0) throw new IllegalArgumentException("maxFloors cannot be a negative value: " + maxFloors);
+			else
+				this.setMaxFloors(_maxFloors);
 		}catch (Exception mFlrError){
 			System.out.println("Error: " + mFlrError.getMessage());
 		}
+		
+		try{
+			if (_maxOccup < 0) throw new IllegalArgumentException("maxFloors cannot be a negative value: " + maxFloors);
+			else
+				this.setMaxOccup(_maxOccup);
+		}catch (Exception mOccError){
+			System.out.println("Error: " + mOccError.getMessage());
+		}
+	}
+	
+	private void setdoorOpenTime(int time) {
+		
+		doorOpenTime = time;
+	}
+	
+	private void setMaxFloors(int max) {
+		
+		maxFloors = max;
+	}
+	
+	private void setMaxIdleTime(int time) {
+		
+		maxIdleTime = time;
+	}
+	
+	private void setMaxOccup(int max) {
+		
+		maxOccup = max;
+	}
+	
+	private void setSpeed(int theSpeed) {
+		
+		speed = theSpeed;
 	}
 	
 	/**
@@ -167,7 +209,7 @@ public class RegElevator implements Elevator, Runnable, Time {
 			if (state == TODEFAULT) {
 				this.setState(IDLING);
 			} else {
-				//building.getFloorList().get(currFloor).ding();
+				building.getFloor().ding(currFloor, elevatorNum);
 				this.notifyAll();
 				System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " doors opening...");
 				Thread.sleep(this.getScaled(this.toMilli(doorOpenTime)));
@@ -175,6 +217,22 @@ public class RegElevator implements Elevator, Runnable, Time {
 			}
 			destList.remove();
 		}
+	}
+	
+	public void addPassenger() {
+		
+		if (currentOccup < maxOccup) {
+			
+			currentOccup++;
+		}
+	}
+	
+	public boolean isFull() {
+		
+		if (currentOccup < maxOccup)
+			return false;
+		else
+			return true;
 	}
 	
 	/**
@@ -194,6 +252,11 @@ public class RegElevator implements Elevator, Runnable, Time {
 	private void setState(int _state) {
 		
 		state = _state;
+	}
+	
+	public void setDefault(int floorNum) {
+		
+		DEFAULT = floorNum;
 	}
 
 	/**
@@ -252,7 +315,7 @@ public class RegElevator implements Elevator, Runnable, Time {
 	public void endTimer() {
 		
 		timerEnd = System.currentTimeMillis();
-		long totalTime = this.toSec("nano", timerEnd - timerStart);
+		totalTime = this.toSec("nano", timerEnd - timerStart);
 		timerStarted = false;
 	}
 

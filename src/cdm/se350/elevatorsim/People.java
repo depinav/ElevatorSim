@@ -10,6 +10,8 @@ public class People implements Person {
 
 	private int currentFloor;
 	private int destFloor;
+	private int elevatorFloor;
+	private int elevator;
 	private Building building = Building.getInstance();
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	private int personNo;
@@ -68,8 +70,10 @@ public class People implements Person {
 		return personNo;
 	}
 	
-	public void elevatorArrived() {
+	public void elevatorArrived(int floor, int _elevator) {
 		
+		floor = elevatorFloor;
+		elevator = _elevator;
 		synchronized(this) {
 			this.notifyAll();
 		}
@@ -77,6 +81,7 @@ public class People implements Person {
 	
 	public void enterElevator(int elevator) {
 		
+		building.getFloor().enterElevator(elevator);
 	}
 	
 	public void exitElevator() {
@@ -103,6 +108,10 @@ public class People implements Person {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+			}
+			
+			if (elevatorFloor == currentFloor) {
+				this.enterElevator(elevator);
 			}
 		}
 	}

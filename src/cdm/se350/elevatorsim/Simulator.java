@@ -17,8 +17,6 @@ public class Simulator implements Time {
 	private int scale;
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	
-	private long p;
-	
 	private long timerStart;
 	private long timerEnd;
 	private long totalTime;
@@ -71,12 +69,15 @@ public class Simulator implements Time {
 	public void run() throws InterruptedException {
 		
 		Building building = Building.getInstance();
+		ElevatorController controller = ElevatorController.getInstance();
+		
 		building.setFloors(floors);
 		building.setElevators(elevators);
 		building.setScale(scale);
-		ElevatorController controller = ElevatorController.getInstance();
+		
 		controller.setElevatorList(building.getElevatorList());
-		controller.startElevators();
+		controller.setDefaultFloor(7, 0);
+//		controller.startElevators();
 		
 		while(!totalTimerPassed) {
 			
@@ -91,7 +92,7 @@ public class Simulator implements Time {
 			this.countTimer();
 			
 			totalSubTime = System.nanoTime() - subTimeStart;
-			if (totalSubTime > (p = this.toNano(seconds))) {
+			if (totalSubTime > this.toNano(seconds)) {
 				
 				building.addPersons(people);
 				building.startPeople();
@@ -105,7 +106,7 @@ public class Simulator implements Time {
 		
 		Thread.sleep(10000);
 		building.stopPeople();
-		controller.stopElevators();
+//		controller.stopElevators();
 	}
 
 	public long toMilli(long sec) {

@@ -42,4 +42,8 @@ public interface Elevator extends Runnable{
 	int getCurrFloor();
 
 	String getTravelDir();
+	
+	public void setDefault(int floorNum);
+	
+	public void addPassenger();
 }

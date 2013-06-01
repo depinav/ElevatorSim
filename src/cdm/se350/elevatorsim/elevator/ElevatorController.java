@@ -153,6 +153,19 @@ public final class ElevatorController {
 		return elevatorList;
 	}
 	
+	public void setDefaultFloor(int floorNum) {
+		
+		for(int i = 0; i < elevatorList.size(); i++) {
+			
+			elevatorList.get(i).setDefault(floorNum);
+		}
+	}
+	
+	public void setDefaultFloor(int floorNum, int elevatorNum) {
+		
+		elevatorList.get(elevatorNum).setDefault(floorNum);
+	}
+	
 	public void request(int floor, String dir) {
 		
 	}

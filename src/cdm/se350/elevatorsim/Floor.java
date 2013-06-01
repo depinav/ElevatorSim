@@ -35,8 +35,17 @@ public class Floor {
 		System.out.println(dateFormat.format(new Date()) + "\tFloor " + currFl + " callbox pressed.");
 	}
 	
-	public void ding() {
+	public void ding(int floorNum, int elevator) {
 		
+		for(int i = 0; i < peopleList.size(); i++) {
+			
+			peopleList.get(i).elevatorArrived(floorNum, elevator);
+		}
+	}
+	
+	public void enterElevator(int elevatorNum) {
+		
+		building.getElevatorList().get(elevatorNum).addPassenger();
 	}
 	
 	public void createPeople(int people) {
