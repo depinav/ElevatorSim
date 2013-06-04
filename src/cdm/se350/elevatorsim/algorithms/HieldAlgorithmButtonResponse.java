@@ -19,27 +19,35 @@ public class HieldAlgorithmButtonResponse implements RequestResponse {
 	
 	public void ElevatorRequest(int floor, String dir){
 		
-		
-		for (int i = 0; i < controller.getElevatorList().size(); i++){
-			String t = controller.getElevator(i).getTravelDir();
-			if (floor == controller.getElevator(i).getCurrFloor() && controller.getElevator(i).getDestList().isEmpty()){
-				controller.getElevator(i).addDest(floor);
-				break;
-				
-			}else if(!controller.getElevator(i).getDestList().isEmpty()){
-				if ((controller.getElevator(i).getTravelDir().equals("Up") && controller.getElevator(i).getCurrFloor() < floor) || (controller.getElevator(i).getTravelDir().equals("Down") && controller.getElevator(i).getCurrFloor() > floor)){
-				
+		AlgoLoop : while (true){
+			for (int i = 0; i < controller.getElevatorList().size(); i++){
+				if (floor == controller.getElevator(i).getCurrFloor() && controller.getElevator(i).getDestList().isEmpty()){
 					controller.getElevator(i).addDest(floor);
-					break;
+					System.out.println("1 Scenario Sending elevator: Elevator " + i);
+					break AlgoLoop;
 				}
-				
-			}else if ( (controller.getElevator(i).getDestList().isEmpty()) ){
-				controller.getElevator(i).addDest(floor);
-				break;
-				
-			}else{
-				controller.addPendDest(floor, dir);
 			}
+			for (int i = 0; i < controller.getElevatorList().size(); i++){		
+				if(!controller.getElevator(i).getDestList().isEmpty()){
+					if ((controller.getElevator(i).getTravelDir().equals("Up") && controller.getElevator(i).getCurrFloor() < floor) || (controller.getElevator(i).getTravelDir().equals("Down") && controller.getElevator(i).getCurrFloor() > floor)){
+						controller.getElevator(i).addDest(floor);
+						System.out.println("2 Scenario Sending elevator: Elevator " + i);
+						break AlgoLoop;
+					}
+					
+				}
+			}
+			for (int i = 0; i < controller.getElevatorList().size(); i++){
+				if ( (controller.getElevator(i).getDestList().isEmpty()) ){
+					controller.getElevator(i).addDest(floor);
+					System.out.println("3 Scenario Sending elevator: Elevator " + i);
+					break AlgoLoop;
+					
+				}
+			}
+			System.out.println("Adding to pending list ");
+			controller.addPendDest(floor, dir);
+			break AlgoLoop;
 		}
 	}
 }
