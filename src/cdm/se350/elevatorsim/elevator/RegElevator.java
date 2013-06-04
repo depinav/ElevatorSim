@@ -28,6 +28,7 @@ import cdm.se350.elevatorsim.interfaces.Time;
 public class RegElevator implements Elevator, Runnable, Time {
 	
 	private String travelDir;
+	private String requestDir;
 	private int DEFAULT = 1;
 	private int currentOccup;
 	private int maxOccup;
@@ -237,6 +238,7 @@ public class RegElevator implements Elevator, Runnable, Time {
 		
 		if(currentOccup > 0)
 			currentOccup--;
+		
 		System.out.println("Elevator " + elevatorNum + " total passenger count: " + currentOccup);
 	}
 	

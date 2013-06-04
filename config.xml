@@ -3,9 +3,9 @@
   <settings>
     <floors>15</floors>
     <elevators>6</elevators>
-    <persons>3</persons>
+    <persons>2</persons>
     <scale>1</scale>
-    <seconds>5</seconds>
+    <seconds>4</seconds>
     <time>20</time>
 	<alg>1</alg>
   </settings>

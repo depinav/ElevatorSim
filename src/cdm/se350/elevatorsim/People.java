@@ -80,11 +80,11 @@ public class People implements Person {
 		}
 	}
 	
-	public void enterElevator(int elevator) {
+	public void enterElevator() {
 		
-		System.out.println(dateFormat.format(new Date()) + "\tPerson " + personNo + " entered Elevator " + elevator);
-		building.getFloor().enterElevator(elevator - 1);
-		building.getElevatorList().get(elevator - 1).addDest(destFloor);
+		System.out.println(dateFormat.format(new Date()) + "\tPerson " + personNo + " entered Elevator " + this.elevator);
+		building.getFloor().enterElevator(this.elevator - 1);
+		building.getElevatorList().get(this.elevator - 1).addDest(destFloor);
 	}
 	
 	public void exitElevator() {
@@ -124,22 +124,26 @@ public class People implements Person {
 			}
 			
 			if(active) {
-				this.enterElevator(elevator);
+				this.enterElevator();
 			}
 			
-			if (active) {
-				synchronized(this) {
-					try {
-						this.wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+			while(inElevator) {
+				
+				if (active) {
+					synchronized(this) {
+						try {
+							this.wait();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
 				}
-			}
-			
-			if(active) {
 				
-				this.exitElevator();
+				if(active) {
+					
+//					if()
+						this.exitElevator();
+				}
 			}
 		}
 	}
