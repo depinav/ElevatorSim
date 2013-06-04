@@ -199,6 +199,12 @@ public class RegElevator implements Elevator, Runnable, Time {
 		this.setState(TRAVELING);
 	}
 	
+	public void requestElevator(String dir, int floor) {
+		
+		requestDir = dir;
+		this.addDest(floor);
+	}
+	
 	/**
 	 * 
 	 * Initiates certain actions to take place when an elevator arrives to a specified floor

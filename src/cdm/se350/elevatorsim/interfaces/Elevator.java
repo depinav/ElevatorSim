@@ -48,4 +48,6 @@ public interface Elevator extends Runnable{
 	public void addPassenger();
 	
 	public void removePassenger();
+	
+	void requestElevator( String dir, int floor );
 }
