@@ -4,3 +4,4 @@
 *.docx#
 ~*.docx
 nohup.out
+.classpath
