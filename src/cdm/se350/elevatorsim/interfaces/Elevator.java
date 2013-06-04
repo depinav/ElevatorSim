@@ -46,4 +46,6 @@ public interface Elevator extends Runnable{
 	public void setDefault(int floorNum);
 	
 	public void addPassenger();
+	
+	public void removePassenger();
 }

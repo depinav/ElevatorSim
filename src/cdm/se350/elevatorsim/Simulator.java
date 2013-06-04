@@ -111,9 +111,7 @@ public class Simulator implements Time {
 				totalTimerPassed = true;
 			
 		}
-		building.addPersons(2);
-		building.startPeople();
-		Thread.sleep(90000);
+		Thread.sleep(this.toScaled(60000));
 		building.stopPeople();
 		controller.stopElevators();
 	}
@@ -121,6 +119,11 @@ public class Simulator implements Time {
 	public long toMilli(long sec) {
 		
 		return sec * 1000;
+	}
+	
+	public long toScaled(long unscaled) {
+		
+		return unscaled/scale;
 	}
 	
 	public long toNano(long sec) {

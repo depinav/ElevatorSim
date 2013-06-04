@@ -38,7 +38,7 @@ public class Floor {
 		
 		for(int i = 0; i < peopleList.size(); i++) {
 			
-			if(peopleList.get(i).getCurrent() == floorNum)
+			if(peopleList.get(i).getCurrent() == floorNum || peopleList.get(i).inElevator())
 				peopleList.get(i).elevatorArrived(floorNum, elevator);
 		}
 	}
@@ -46,6 +46,11 @@ public class Floor {
 	public void enterElevator(int elevatorNum) {
 		
 		building.getElevatorList().get(elevatorNum).addPassenger();
+	}
+	
+	public void exitElevator(int elevatorNum) {
+		
+		building.getElevatorList().get(elevatorNum).removePassenger();
 	}
 	
 	public void createPeople(int people) {

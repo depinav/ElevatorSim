@@ -3,10 +3,10 @@
   <settings>
     <floors>15</floors>
     <elevators>6</elevators>
-    <persons>1</persons>
+    <persons>3</persons>
     <scale>1</scale>
     <seconds>5</seconds>
-    <time>15</time>
+    <time>20</time>
 	<alg>1</alg>
   </settings>
 </config>

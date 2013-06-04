@@ -16,6 +16,7 @@ public class People implements Person {
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	private int personNo;
 	private boolean active = true;
+	private boolean inElevator = false;
 	
 	public People(int currFl, int destFl) {
 		
@@ -82,12 +83,20 @@ public class People implements Person {
 	public void enterElevator(int elevator) {
 		
 		System.out.println(dateFormat.format(new Date()) + "\tPerson " + personNo + " entered Elevator " + elevator);
-		building.getFloor().enterElevator(elevator);
+		building.getFloor().enterElevator(elevator - 1);
 		building.getElevatorList().get(elevator - 1).addDest(destFloor);
 	}
 	
 	public void exitElevator() {
 		
+		active = false;
+		System.out.println(dateFormat.format(new Date()) + "\tPerson " + personNo + " exited elevator " + elevator);
+		building.getFloor().exitElevator(elevator - 1);
+	}
+	
+	public boolean inElevator() {
+		
+		return inElevator;
 	}
 	
 	public void stop() {
@@ -104,22 +113,33 @@ public class People implements Person {
 		building.getFloor().pressCallBox(getCurrent(), getDest());
 		while(active) {
 			
-			synchronized(this) {
-				try {
-					this.wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+			if(active) {
+				synchronized(this) {
+					try {
+						this.wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 			
-			this.enterElevator(elevator);
+			if(active) {
+				this.enterElevator(elevator);
+			}
 			
-			synchronized(this) {
-				try {
-					this.wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+			if (active) {
+				synchronized(this) {
+					try {
+						this.wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
+			}
+			
+			if(active) {
+				
+				this.exitElevator();
 			}
 		}
 	}

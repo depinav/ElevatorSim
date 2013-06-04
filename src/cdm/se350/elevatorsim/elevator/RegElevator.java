@@ -178,13 +178,14 @@ public class RegElevator implements Elevator, Runnable, Time {
 		synchronized (this) {
 			if (newDest != currFloor && newDest > 0 && newDest <= maxFloors) {
 				if (destList.isEmpty() && currFloor < newDest) {
+					destList = new PriorityQueue<Integer>();
 					travelDir = "Up";
 					destList.add(newDest);
 				} else if (destList.isEmpty() && currFloor > newDest) {
 					destList = new PriorityQueue<Integer>(1, Collections.reverseOrder());
 					travelDir = "Down";
 					destList.add(newDest);
-				} else if ( (travelDir.equals("Up") && newDest > currFloor) || (travelDir.equals("Down") && newDest < currFloor))
+				} else if ( ((travelDir.equals("Up") && newDest > currFloor) || (travelDir.equals("Down") && newDest < currFloor)) && !destList.contains(newDest))
 					destList.add(newDest);
 				
 				System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " added floor " + newDest + " to destination list");
@@ -226,10 +227,17 @@ public class RegElevator implements Elevator, Runnable, Time {
 	
 	public void addPassenger() {
 		
-		if (currentOccup < maxOccup) {
-			
+		if (currentOccup < maxOccup)
 			currentOccup++;
-		}
+		
+		System.out.println("Elevator " + elevatorNum + " total passenger count: " + currentOccup);
+	}
+	
+	public void removePassenger() {
+		
+		if(currentOccup > 0)
+			currentOccup--;
+		System.out.println("Elevator " + elevatorNum + " total passenger count: " + currentOccup);
 	}
 	
 	public boolean isFull() {
@@ -368,7 +376,6 @@ public class RegElevator implements Elevator, Runnable, Time {
 						e.printStackTrace();
 					}
 					System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " passing floor " + currFloor + " Full destination list " + destList);
-					System.out.println(travelDir);
 					if (travelDir.equals("Up"))
 						currFloor++;
 					if (travelDir.equals("Down"))

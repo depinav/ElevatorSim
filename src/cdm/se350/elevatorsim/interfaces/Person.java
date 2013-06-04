@@ -8,4 +8,5 @@ public interface Person extends Runnable {
 	int getCurrent();
 	int getNumber();
 	void stop();
+	boolean inElevator();
 }
