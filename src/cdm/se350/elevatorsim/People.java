@@ -72,7 +72,7 @@ public class People implements Person {
 	
 	public void elevatorArrived(int floor, int _elevator) {
 		
-		floor = elevatorFloor;
+		elevatorFloor = floor;
 		elevator = _elevator;
 		synchronized(this) {
 			this.notifyAll();
@@ -81,7 +81,9 @@ public class People implements Person {
 	
 	public void enterElevator(int elevator) {
 		
+		System.out.println(dateFormat.format(new Date()) + "\tPerson " + personNo + " entered Elevator " + elevator);
 		building.getFloor().enterElevator(elevator);
+		building.getElevatorList().get(elevator - 1).addDest(destFloor);
 	}
 	
 	public void exitElevator() {
@@ -98,7 +100,7 @@ public class People implements Person {
 	
 	public void run() {
 		
-		System.out.println(dateFormat.format(new Date()) + "\tPerson " + personNo + " on " + this.getCurrent() + " Floor. Destination: " + this.getDest());
+		System.out.println(dateFormat.format(new Date()) + "\tPerson " + personNo + " on Floor " + this.getCurrent() + ". Destination: " + this.getDest());
 		building.getFloor().pressCallBox(getCurrent(), getDest());
 		while(active) {
 			
@@ -110,8 +112,14 @@ public class People implements Person {
 				}
 			}
 			
-			if (elevatorFloor == currentFloor) {
-				this.enterElevator(elevator);
+			this.enterElevator(elevator);
+			
+			synchronized(this) {
+				try {
+					this.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

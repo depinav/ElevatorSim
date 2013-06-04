@@ -30,16 +30,16 @@ public class Floor {
 		else
 			dir = "Down";
 		
-		controller.request(currFl, dir);
-		
 		System.out.println(dateFormat.format(new Date()) + "\tFloor " + currFl + " callbox pressed.");
+		controller.request(currFl, dir);
 	}
 	
 	public void ding(int floorNum, int elevator) {
 		
 		for(int i = 0; i < peopleList.size(); i++) {
 			
-			peopleList.get(i).elevatorArrived(floorNum, elevator);
+			if(peopleList.get(i).getCurrent() == floorNum)
+				peopleList.get(i).elevatorArrived(floorNum, elevator);
 		}
 	}
 	

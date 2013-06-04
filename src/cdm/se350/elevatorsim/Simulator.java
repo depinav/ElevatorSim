@@ -111,11 +111,11 @@ public class Simulator implements Time {
 				totalTimerPassed = true;
 			
 		}
-		building.addPersons(1);
+		building.addPersons(2);
 		building.startPeople();
-		Thread.sleep(10000);
+		Thread.sleep(90000);
 		building.stopPeople();
-//		controller.stopElevators();
+		controller.stopElevators();
 	}
 
 	public long toMilli(long sec) {

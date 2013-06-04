@@ -210,6 +210,11 @@ public class RegElevator implements Elevator, Runnable, Time {
 				this.setState(IDLING);
 			} else {
 				building.getFloor().ding(currFloor, elevatorNum);
+				
+				if (destList.isEmpty()) {
+					travelDir = null;
+				}
+				
 				this.notifyAll();
 				System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " doors opening...");
 				Thread.sleep(this.getScaled(this.toMilli(doorOpenTime)));
@@ -257,6 +262,7 @@ public class RegElevator implements Elevator, Runnable, Time {
 	public void setDefault(int floorNum) {
 		
 		DEFAULT = floorNum;
+		currFloor = DEFAULT;
 	}
 
 	/**
@@ -320,7 +326,7 @@ public class RegElevator implements Elevator, Runnable, Time {
 	}
 
 	public void run() {
-
+		
 		while(running) {
 			
 			synchronized (this) {
@@ -362,6 +368,7 @@ public class RegElevator implements Elevator, Runnable, Time {
 						e.printStackTrace();
 					}
 					System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " passing floor " + currFloor + " Full destination list " + destList);
+					System.out.println(travelDir);
 					if (travelDir.equals("Up"))
 						currFloor++;
 					if (travelDir.equals("Down"))
@@ -382,92 +389,4 @@ public class RegElevator implements Elevator, Runnable, Time {
 		
 		return sec * 1000000000;
 	}
-	
-	/*public static class ElevatorImplTest extends TestCase {
-		private RegElevator elevatorImpl = null;
-		private Building building = null;
-		
-		public ElevatorImplTest (String name) throws Exception {
-			super(name);
-		}
-		
-		protected void setUp() throws Exception{
-			System.out.println("Setup Building");
-			building = new Building (20,5);
-			System.out.println("Setup ElevatorImpl");
-			elevatorImpl = new RegElevator (3,20);
-		}
-		
-		protected void tearDown(){
-			System.out.println("TearDown Building");
-			building = null;
-			System.out.println("TearDown ElevatorImpl");
-			elevatorImpl = null;
-		}
-		
-		public static Test suite (){
-			return new TestSuite(ElevatorImplTest.class);
-		}
-		
-		public void testElevatorImplConstructors () throws Exception {
-			System.out.println("Test ElevatorImpl Constructors");
-			
-			try{
-				elevatorImpl.doorOpenTime = -5;
-				fail("Allowed negative value for door open time");
-			}catch (Exception e){
-				System.out.println("Okay. Found: " + e.getMessage());
-			}
-			
-			try{
-				elevatorImpl.speed = -1;
-				fail("Allowed negative value for speed");
-			}catch (Exception e2){
-				System.out.println("Okay. Found: " + e2.getMessage());
-			}
-			
-			try{
-				elevatorImpl.maxIdleTime = -10;
-				fail("Allowed negative value for Max Idle Time");
-			}catch (Exception e3){
-				System.out.println("Okay. Found: " + e3.getMessage());
-			}
-			
-			try{
-				elevatorImpl.elevatorNum = -10;
-				fail("Allowed negative value for elevatorNum");
-			}catch (Exception e4){
-				System.out.println("Okay. Found: " + e4.getMessage());
-			}
-
-		}
-		
-		public void testAddDest() throws Exception {
-			elevatorImpl.addDest(3);
-			elevatorImpl.addDest(4);
-			elevatorImpl.addDest(5);
-			int[] testList = {3,4,5};
-			
-			assertTrue("Value: " + elevatorImpl.destList.size(), (elevatorImpl.destList.size()) == (3));
-			assertTrue("Value: " + elevatorImpl.destList, elevatorImpl.destList.equals(testList) );
-			
-		}
-		
-		public void testNewDest () throws Exception {
-			try{
-				elevatorImpl.addDest(30);
-				fail("Floor does not exist");
-			}catch (Exception e){
-				System.out.println("Okay. Found: " + e.getMessage());
-			}
-			
-			try{
-				elevatorImpl.addDest(-5);
-				fail("Allowed negative value for destination");
-			}catch (Exception e){
-				System.out.println("Okay. Found: " + e.getMessage());
-			}
-		}
-		
-	} */
 }
