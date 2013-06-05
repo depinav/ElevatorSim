@@ -360,6 +360,10 @@ public class RegElevator implements Elevator, Runnable, Time {
 			
 			synchronized (this) {
 				if (destList.isEmpty()) {
+					if( !controller.getPendingList().isEmpty() ) {
+						controller.pending();
+					}
+					
 					try {
 						if (currFloor != DEFAULT) {
 							this.wait(this.getScaled(this.toMilli(maxIdleTime)));

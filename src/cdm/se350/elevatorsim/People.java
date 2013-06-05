@@ -170,6 +170,8 @@ public class People implements Person, Time {
 		
 		System.out.println(dateFormat.format(new Date()) + "\tPerson " + personNo + " total floor wait time " + floorWaitTime + " seconds.");
 		System.out.println(dateFormat.format(new Date()) + "\tPerson " + personNo + " total elevator travel time " + inElevatorWaitTime + " seconds.");
+		
+		
 	}
 
 	public long toMilli(long sec) {
@@ -206,5 +208,15 @@ public class People implements Person, Time {
 		
 		timerEnd = System.nanoTime();
 		totalTime = this.toSec("nano", timerEnd - timerStart);
+	}
+	
+	public long getWaitTime() {
+
+		return floorWaitTime;
+	}
+	
+	public long getTravelTime() {
+		
+		return inElevatorWaitTime;
 	}
 }

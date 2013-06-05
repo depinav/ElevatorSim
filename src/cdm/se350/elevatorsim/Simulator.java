@@ -2,9 +2,10 @@ package cdm.se350.elevatorsim;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.HashMap;
 
 import cdm.se350.elevatorsim.elevator.ElevatorController;
+import cdm.se350.elevatorsim.interfaces.Person;
 import cdm.se350.elevatorsim.interfaces.Time;
 
 public class Simulator implements Time {
@@ -26,6 +27,8 @@ public class Simulator implements Time {
 	private boolean timerStarted = false;
 	private boolean subTimerStarted = false;
 	private boolean totalTimerPassed = false;
+	
+	private HashMap<Person, Long> personWaitTime = new HashMap<Person, Long>();
 	
 	public Simulator(int _floors, int _elevators, int _people, int _scale, long _seconds, long _time, int _alg) {
 		
@@ -114,6 +117,10 @@ public class Simulator implements Time {
 		Thread.sleep(this.toScaled(60000));
 		building.stopPeople();
 		controller.stopElevators();
+		
+		for(int i = 0; i < building.getFloor().getPersonList().size(); i++) {
+			personWaitTime.put(building.getFloor().getPersonList().get(i), building.getFloor().getPersonList().get(i).getWaitTime());
+		}
 	}
 
 	public long toMilli(long sec) {

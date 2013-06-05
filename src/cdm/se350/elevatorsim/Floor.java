@@ -109,4 +109,9 @@ public class Floor {
 		
 		System.out.println(dateFormat.format(new Date()) + "\tAll people stopped");
 	}
+	
+	public ArrayList<Person> getPersonList() {
+		
+		return peopleList;
+	}
 }

@@ -9,4 +9,6 @@ public interface Person extends Runnable {
 	int getNumber();
 	void stop();
 	boolean inElevator();
+	public long getTravelTime();
+	public long getWaitTime();
 }
