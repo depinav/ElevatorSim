@@ -5,6 +5,14 @@ import java.util.Map;
 
 import cdm.se350.elevatorsim.elevator.ElevatorController;
 import cdm.se350.elevatorsim.interfaces.PendingResponse;
+/**
+ * Used to create an implement pending algorithm for pending floors.
+ * 
+ * @author 		Victor DePina
+ * @author 		Edric Delleola
+ * @since 		Version 1.0
+ * 
+ */
 
 public class ImprovedAlgorithmPending implements PendingResponse {
 	
@@ -12,6 +20,9 @@ public class ImprovedAlgorithmPending implements PendingResponse {
 	
 	Map<Integer, String> pendList = controller.getPendingList();
 	
+	/**
+	 * Handles pending requests using improved algorithm.
+	 */
 	public void PendingRequests(int floor, String dir){
 		
 		int farFloor = 0;

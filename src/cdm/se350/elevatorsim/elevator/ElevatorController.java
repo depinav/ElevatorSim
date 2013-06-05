@@ -39,7 +39,7 @@ public final class ElevatorController {
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	
 	ResponseAlgorithmSelection requestAlg = null;
-	//PendingAlgorithmSelection pendingAlg = null;
+	PendingAlgorithmSelection pendingAlg = null;
 	
 	//private ArrayList<Integer> pendingList = new ArrayList<Integer>();
 	
@@ -75,10 +75,19 @@ public final class ElevatorController {
 		
 	}
 	
+	/**returns unhandled requests that still need to be taken care of
+	 * 
+	 * @return			returns the list of requests that have not been handled
+	 */
 	public Map<Integer, String> getPendingList(){
 		return pendingList;
 	}
 	
+	/**adds a floor and direction to a list for requests that have not been handled
+	 * 
+	 * @param pendDest		the floor of the pending request
+	 * @param dir			the direction called for pending request
+	 */
 	public void addPendDest( int pendDest, String dir ) {
 		pendingList.put(pendDest, dir);
 	}
@@ -102,6 +111,10 @@ public final class ElevatorController {
 		return controllerInstance;
 	}
 	
+	/**sets the algorithm for both button call box requests and pending.
+	 * 
+	 * @param alg		a number for choosing the algorithm 1 sets it to hield, 2 sets to improved, default and any number not 1 or 2 sets it to Hield
+	 */
 	public void setAlg(int alg){
 		AlgorithmRequestFactory requestFactory = new AlgorithmRequestFactory();
 		requestAlg = requestFactory.getRequestResponse(alg);
@@ -166,6 +179,7 @@ public final class ElevatorController {
 		return elevatorList.get(i);
 	}
 	
+	
 	public ArrayList<Elevator> getElevatorList(){
 		return elevatorList;
 	}
@@ -183,8 +197,24 @@ public final class ElevatorController {
 		elevatorList.get(elevatorNum).setDefault(floorNum);
 	}
 	
+	/**
+	 * sends request for an elevator
+	 * 
+	 * @param floor		the floor that elevator needs to go to
+	 * @param dir		the requested travel direction
+	 */
 	public void request(int floor, String dir) {
 		requestAlg.selectElevator(floor, dir);
+	}
+	
+	/**
+	 * sends request for an elevator for floors that are still pending
+	 * 
+	 * @param floor		the floor that elevator needs to go to
+	 * @param dir		the requested travel direction
+	 */
+	public void pending(int floor, String dir){
+		pendingAlg.pending(floor, dir);
 	}
 	
 }

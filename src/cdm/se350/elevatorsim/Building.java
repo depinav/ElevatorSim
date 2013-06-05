@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
+import cdm.se350.elevatorsim.Floor;
 import cdm.se350.elevatorsim.factories.ElevatorFactory;
 import cdm.se350.elevatorsim.interfaces.Elevator;
 import cdm.se350.elevatorsim.interfaces.Time;
