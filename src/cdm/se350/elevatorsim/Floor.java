@@ -26,11 +26,11 @@ public class Floor {
 		ElevatorController controller = ElevatorController.getInstance();
 		
 		if( currFl > destFl )
-			dir = "Up";
-		else
 			dir = "Down";
+		else
+			dir = "Up";
 		
-		System.out.println(dateFormat.format(new Date()) + "\tFloor " + currFl + " callbox pressed.");
+		System.out.println(dateFormat.format(new Date()) + "\tFloor " + currFl + " callbox pressed to go " + dir);
 		controller.request(currFl, dir);
 	}
 	

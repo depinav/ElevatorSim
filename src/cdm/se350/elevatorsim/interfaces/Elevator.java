@@ -50,4 +50,8 @@ public interface Elevator extends Runnable{
 	public void removePassenger();
 	
 	void requestElevator( String dir, int floor );
+
+	String getRequestDir();
+
+	boolean isFull();
 }
