@@ -17,21 +17,40 @@ public class Floor {
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	public static int totalPeople = 1;
 	private static int iPeople = 0;
+	private boolean[][] callboxPressed = new boolean[building.getFloorList()][2];
 
-	public Floor (){}
+	public Floor (){
+		
+		for (int i = 0; i < callboxPressed.length; i++ ) {
+			callboxPressed[i][0] = false;
+			callboxPressed[i][1] = false;
+		}
+	}
 	
 	public void pressCallBox(int currFl, int destFl) {
 		
 		String dir;
 		ElevatorController controller = ElevatorController.getInstance();
 		
-		if( currFl > destFl )
-			dir = "Down";
-		else
-			dir = "Up";
-		
-		System.out.println(dateFormat.format(new Date()) + "\tFloor " + currFl + " callbox pressed to go " + dir);
-		controller.request(currFl, dir);
+		synchronized(peopleList) {
+			
+			if( currFl > destFl )
+				dir = "Down";
+			else
+				dir = "Up";
+			
+			if( "Up".equals(dir) && !callboxPressed[currFl][0] ) {
+				
+				System.out.println(dateFormat.format(new Date()) + "\tFloor " + currFl + " callbox pressed to go " + dir);
+				callboxPressed[currFl - 1][0] = true;
+				controller.request(currFl, dir);
+			} else if( "Down".equals(dir) && !callboxPressed[currFl][1] ) {
+				
+				System.out.println(dateFormat.format(new Date()) + "\tFloor " + currFl + " callbox pressed to go " + dir);
+				callboxPressed[currFl - 1][0] = true;
+				controller.request(currFl, dir);
+			}
+		}
 	}
 	
 	public void ding(int floorNum, int elevator) {
@@ -41,6 +60,8 @@ public class Floor {
 			if(peopleList.get(i).getCurrent() == floorNum || peopleList.get(i).inElevator())
 				peopleList.get(i).elevatorArrived(floorNum, elevator);
 		}
+		callboxPressed[floorNum - 1][0] = false;
+		callboxPressed[floorNum - 1][1] = false;
 	}
 	
 	public void enterElevator(int elevatorNum) {

@@ -54,6 +54,7 @@ public class RegElevator implements Elevator, Runnable, Time {
 	private boolean timerStarted = false;
 	
 	Building building = Building.getInstance();
+	ElevatorController controller = ElevatorController.getInstance();
 
 	/**
 	 * 
@@ -194,13 +195,14 @@ public class RegElevator implements Elevator, Runnable, Time {
 					destList.add(newDest);
 				
 				System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " added floor " + newDest + " to destination list");
-			}
+			} else if (newDest == currFloor && destList.isEmpty())
+				destList.add(newDest);
 		}
 		
 		synchronized (this) {
+			this.setState(TRAVELING);
 			this.notifyAll();
 		}
-		this.setState(TRAVELING);
 	}
 	
 	public void requestElevator(String dir, int floor) {
@@ -239,16 +241,19 @@ public class RegElevator implements Elevator, Runnable, Time {
 	
 	public void addPassenger() {
 		
-		if (currentOccup < maxOccup)
+		synchronized(this) {
 			currentOccup++;
+		}
 		
 		System.out.println("Elevator " + elevatorNum + " total passenger count: " + currentOccup);
 	}
 	
 	public void removePassenger() {
 		
-		if(currentOccup > 0)
-			currentOccup--;
+		synchronized(this) {
+			if(currentOccup > 0)
+				currentOccup--;
+		}
 		
 		System.out.println("Elevator " + elevatorNum + " total passenger count: " + currentOccup);
 	}
@@ -269,6 +274,7 @@ public class RegElevator implements Elevator, Runnable, Time {
 	public void stop() {
 		
 		running = false;
+//		System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " total passenger count: " + currentOccup);
 		this.setState(STOPPED);
 		synchronized (this) {
 			this.notifyAll();
@@ -348,6 +354,8 @@ public class RegElevator implements Elevator, Runnable, Time {
 
 	public void run() {
 		
+		this.setState(IDLING);
+		
 		while(running) {
 			
 			synchronized (this) {
@@ -356,8 +364,9 @@ public class RegElevator implements Elevator, Runnable, Time {
 						if (currFloor != DEFAULT) {
 							this.wait(this.getScaled(this.toMilli(maxIdleTime)));
 						}
-						else
+						else {
 							this.wait();
+						}
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}

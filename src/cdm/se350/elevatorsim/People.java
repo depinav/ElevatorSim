@@ -5,18 +5,27 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import cdm.se350.elevatorsim.interfaces.Person;
+import cdm.se350.elevatorsim.interfaces.Time;
 
-public class People implements Person {
+public class People implements Person, Time {
 
 	private int currentFloor;
 	private int destFloor;
 	private int elevatorFloor;
 	private int elevator;
+	private int calledElevator;
 	private Building building = Building.getInstance();
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	private int personNo;
 	private boolean active = true;
 	private boolean inElevator = false;
+	
+	private long floorWaitTime;
+	private long inElevatorWaitTime;
+	private long timerStart;
+	private long timerEnd;
+	private long totalTime;
+	private boolean timerStarted = false;
 	
 	public People(int currFl, int destFl) {
 		
@@ -74,7 +83,13 @@ public class People implements Person {
 	public void elevatorArrived(int floor, int _elevator) {
 		
 		elevatorFloor = floor;
-		elevator = _elevator;
+		
+		if(!inElevator) {
+			elevator = _elevator;
+		}
+		else
+			calledElevator = _elevator;
+		
 		synchronized(this) {
 			this.notifyAll();
 		}
@@ -84,12 +99,14 @@ public class People implements Person {
 		
 		System.out.println(dateFormat.format(new Date()) + "\tPerson " + personNo + " entered Elevator " + this.elevator);
 		building.getFloor().enterElevator(this.elevator - 1);
+		inElevator = true;
 		building.getElevatorList().get(this.elevator - 1).addDest(destFloor);
 	}
 	
 	public void exitElevator() {
 		
 		active = false;
+		inElevator = false;
 		System.out.println(dateFormat.format(new Date()) + "\tPerson " + personNo + " exited elevator " + elevator);
 		building.getFloor().exitElevator(elevator - 1);
 	}
@@ -102,6 +119,7 @@ public class People implements Person {
 	public void stop() {
 		
 		active = false;
+		inElevator = false;
 		synchronized (this) {
 			this.notifyAll();
 		}
@@ -116,12 +134,15 @@ public class People implements Person {
 			if(active) {
 				synchronized(this) {
 					try {
+						this.startTimer();
 						this.wait();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 				}
 			}
+			this.endTimer();
+			floorWaitTime = totalTime;
 			
 			if(active) {
 				this.enterElevator();
@@ -132,6 +153,7 @@ public class People implements Person {
 				if (active) {
 					synchronized(this) {
 						try {
+							this.startTimer();
 							this.wait();
 						} catch (InterruptedException e) {
 							e.printStackTrace();
@@ -139,12 +161,50 @@ public class People implements Person {
 					}
 				}
 				
-				if(active) {
-					
-//					if()
-						this.exitElevator();
-				}
+				if(elevator == calledElevator && elevatorFloor == destFloor)
+					this.exitElevator();
+				this.endTimer();
+				inElevatorWaitTime = totalTime;
 			}
 		}
+		
+		System.out.println(dateFormat.format(new Date()) + "\tPerson " + personNo + " total floor wait time " + floorWaitTime + " seconds.");
+		System.out.println(dateFormat.format(new Date()) + "\tPerson " + personNo + " total elevator travel time " + inElevatorWaitTime + " seconds.");
+	}
+
+	public long toMilli(long sec) {
+		
+		return sec / 1000000;
+	}
+	
+	public long toSec(String kind, long init) {
+		
+		if("milli".equalsIgnoreCase(kind))
+			return init / 1000;
+		if("nano".equalsIgnoreCase(kind))
+			return init / 1000000000;
+		else
+			return 0;
+	}
+
+	public long toNano(long sec) {
+		
+		return sec * 1000000000;
+	}
+
+	public void startTimer() {
+		
+		timerStart = System.nanoTime();
+	}
+	
+	public void countTimer() {
+		
+		timerEnd = System.nanoTime();
+	}
+	
+	public void endTimer() {
+		
+		timerEnd = System.nanoTime();
+		totalTime = this.toSec("nano", timerEnd - timerStart);
 	}
 }

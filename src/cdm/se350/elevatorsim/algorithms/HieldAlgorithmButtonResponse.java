@@ -19,7 +19,7 @@ public class HieldAlgorithmButtonResponse implements RequestResponse {
 	/**Algorithm to handle call box requests 
 	 * 
 	 */
-	public void ElevatorRequest(int floor, String dir){
+	public synchronized void ElevatorRequest(int floor, String dir){
 		
 		AlgoLoop : while (true){
 			
@@ -29,17 +29,25 @@ public class HieldAlgorithmButtonResponse implements RequestResponse {
 //					System.out.println("1 Scenario Sending elevator: Elevator " + i);
 					break AlgoLoop;
 				}
+				
+				if(!controller.getElevator(i).getDestList().isEmpty()){
+					
+					if( !controller.getElevator(i).isFull() ) {
+						
+						if( ("Up".equals(controller.getElevator(i).getRequestDir()) && "Up".equals(controller.getElevator(i).getTravelDir())) && (floor > controller.getElevator(i).getCurrFloor()) ) {
+							
+							controller.getElevator(i).requestElevator(dir, floor);
+							break AlgoLoop;
+						} else if( ("Down".equals(controller.getElevator(i).getRequestDir()) && "Down".equals(controller.getElevator(i).getTravelDir())) && (floor < controller.getElevator(i).getCurrFloor()) ) {
+							
+							controller.getElevator(i).requestElevator(dir, floor);
+							break AlgoLoop;
+						}
+					}
+				}
 			}
 			
 			for (int i = 0; i < controller.getElevatorList().size(); i++){		
-				if(!controller.getElevator(i).getDestList().isEmpty()){
-					if (!controller.getElevator(i).isFull() && (controller.getElevator(i).getTravelDir().equals("Up") && controller.getElevator(i).getCurrFloor() < floor) && dir == controller.getElevator(i).getRequestDir() || !controller.getElevator(i).isFull() && (controller.getElevator(i).getTravelDir().equals("Down") && controller.getElevator(i).getCurrFloor() > floor)){
-						controller.getElevator(i).requestElevator(dir, floor);
-//						System.out.println("2 Scenario Sending elevator: Elevator " + i);
-						break AlgoLoop;
-					}
-					
-				}
 			}
 			
 			for (int i = 0; i < controller.getElevatorList().size(); i++){
