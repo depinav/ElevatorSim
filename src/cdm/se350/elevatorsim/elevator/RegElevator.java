@@ -65,55 +65,31 @@ public class RegElevator implements Elevator, Runnable, Time {
 	 * @param 		_maxFloors		An int representing the max amount of floors in the building.
 	 * 
 	 */
-	public RegElevator(int _elevatorNum, int _maxFloors) {
+	public RegElevator(int _elevatorNum, int _maxFloors, int _doorOpenTime, int _speed, int _maxIdleTime, int _maxOccup) {
 
-		int _doorOpenTime = 3;
-		int _speed = 1;
-		int _maxIdleTime = 10;
-		int _maxOccup = 8;
 		elevatorNum = _elevatorNum + 1;
 		currFloor = DEFAULT;
 		this.setState(IDLING);
 		
-		try{
 			if (_doorOpenTime < 0) throw new IllegalArgumentException("doorOpenTime cannot be a negative value: " + doorOpenTime);
 			else
 				this.setdoorOpenTime(_doorOpenTime);
-		}catch (Exception DOTError){
-			System.out.println("Error: " + DOTError.getMessage());
-		}
 		
-		try{
 			if (_speed <= 0) throw new IllegalArgumentException("Speed requires a value greater than 0: " + speed);
 			else
 				this.setSpeed(_speed);
-		}catch (Exception spdError){
-			System.out.println("Error: " + spdError.getMessage());
-		}
-		
-		try{
+			
 			if (maxIdleTime < 0) throw new IllegalArgumentException("maxIdleTime cannot be a negative value: " + maxIdleTime);
 			else
 				this.setMaxIdleTime(_maxIdleTime);
-		}catch (Exception MITError){
-			System.out.println("Error: " + MITError.getMessage());
-		}
-		
-		try{
+
 			if (_maxFloors < 0) throw new IllegalArgumentException("maxFloors cannot be a negative value: " + maxFloors);
 			else
 				this.setMaxFloors(_maxFloors);
-		}catch (Exception mFlrError){
-			System.out.println("Error: " + mFlrError.getMessage());
-		}
-		
-		try{
+
 			if (_maxOccup < 0) throw new IllegalArgumentException("maxFloors cannot be a negative value: " + maxFloors);
 			else
 				this.setMaxOccup(_maxOccup);
-		}catch (Exception mOccError){
-			System.out.println("Error: " + mOccError.getMessage());
-		}
 	}
 	
 	private void setdoorOpenTime(int time) {
@@ -175,11 +151,7 @@ public class RegElevator implements Elevator, Runnable, Time {
 		if (state == TODEFAULT)
 			destList.clear();
 		
-		try{
-			if(newDest > maxFloors || newDest <0) throw new IllegalArgumentException("newDest requires a value greater than 0 and less than " + maxFloors+ ": " + newDest);
-		}catch (Exception destError){
-			System.out.println("Error: " + destError.getMessage());
-		}
+			if(newDest > maxFloors || newDest < 0) throw new IllegalArgumentException("newDest requires a value greater than 0 and less than " + maxFloors+ ": " + newDest);
 		
 		synchronized (this) {
 			if (newDest != currFloor && newDest > 0 && newDest <= maxFloors) {

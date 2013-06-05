@@ -16,6 +16,10 @@ public class Simulator implements Time {
 	private long seconds;
 	private long time;
 	private int alg;
+	private int doors;
+	private int speed;
+	private int idle;
+	private int occup;
 	private int scale;
 	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	
@@ -30,7 +34,7 @@ public class Simulator implements Time {
 	
 	private HashMap<Person, Long> personWaitTime = new HashMap<Person, Long>();
 	
-	public Simulator(int _floors, int _elevators, int _people, int _scale, long _seconds, long _time, int _alg) {
+	public Simulator(int _floors, int _elevators, int _people, int _scale, long _seconds, long _time, int _alg, int _doors, int _speed, int _idle, int _occup) {
 		
 		setFloors(_floors);
 		setElevators(_elevators);
@@ -39,6 +43,10 @@ public class Simulator implements Time {
 		setSeconds(_seconds);
 		setTime(_time);
 		setAlg(_alg);
+		setDoors(_doors);
+		setSpeed(_speed);
+		setIdle(_idle);
+		setOccup(_occup);
 	}
 	
 	private void setFloors(int numFl) {
@@ -76,13 +84,33 @@ public class Simulator implements Time {
 		alg = theAlg;
 	}
 	
+	private void setDoors(int theDoors) {
+		
+		doors = theDoors;
+	}
+	
+	private void setSpeed(int theSpeed) {
+		
+		speed = theSpeed;
+	}
+	
+	private void setIdle(int theIdle) {
+		
+		idle = theIdle;
+	}
+	
+	private void setOccup(int theOccup) {
+		
+		occup = theOccup;
+	}
+	
 	public void run() throws InterruptedException {
 		
 		Building building = Building.getInstance();
 		ElevatorController controller = ElevatorController.getInstance();
 		
 		building.setFloors(floors);
-		building.setElevators(elevators);
+		building.setElevators(elevators, doors, speed, idle, occup);
 		building.setScale(scale);
 		
 		controller.setElevatorList(building.getElevatorList());

@@ -7,6 +7,10 @@
     <scale>1</scale>
     <seconds>4</seconds>
     <time>20</time>
-	<alg>1</alg>
+    <doors>3</doors>
+    <speed>1</speed>
+    <idle>10</idle>
+    <occupancy>8</occupancy>
+    <alg>1</alg>
   </settings>
 </config>

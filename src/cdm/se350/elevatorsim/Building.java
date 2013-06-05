@@ -63,7 +63,7 @@ public final class Building implements Time {
 		return floor;
 	}
 	
-	public void setElevators(int totalElevators) {
+	public void setElevators(int totalElevators, int doors, int speed, int idle, int occup) {
 		
 		try{
 			if (totalElevators <= 0) 
@@ -71,7 +71,7 @@ public final class Building implements Time {
 			else
 				for (int j = 0; j < totalElevators; j++){
 					ElevatorFactory elevatorFactory = new ElevatorFactory();
-					elevatorList.add(elevatorFactory.getElevator("Regular", j, floors/*floorList.size()*/));
+					elevatorList.add(elevatorFactory.getElevator("Regular", j, floors, doors, speed, idle, occup));
 				}
 		}catch (Exception eleError){
 			System.out.println("Error: " + eleError.getMessage());
