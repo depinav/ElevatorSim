@@ -221,6 +221,7 @@ public class RegElevator implements Elevator, Runnable, Time {
 				
 				if (destList.isEmpty()) {
 					travelDir = null;
+					requestDir = null;
 				}
 				
 				this.notifyAll();
@@ -366,7 +367,6 @@ public class RegElevator implements Elevator, Runnable, Time {
 				}
 				
 				if(currFloor == destList.peek()) {
-					
 					
 					System.out.println(dateFormat.format(new Date()) + "\tElevator " + elevatorNum + " reached destination: Floor " + currFloor);
 					this.endTimer();
