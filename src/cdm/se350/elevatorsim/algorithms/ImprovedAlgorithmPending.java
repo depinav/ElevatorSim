@@ -23,7 +23,7 @@ public class ImprovedAlgorithmPending implements PendingResponse {
 	/**
 	 * Handles pending requests using improved algorithm.
 	 */
-	public void PendingRequests(int floor, String dir){
+	public void PendingRequests(){
 		
 		int farFloor = 0;
 			
@@ -37,7 +37,7 @@ public class ImprovedAlgorithmPending implements PendingResponse {
 				controller.sendRequest(i,farFloor);
 				//code to put send this request for the new farFloor and maybe sending all other requests with matching directions
 				for (Integer key : pendList.keySet() ) {
-					if (key > farFloor && dir == "Up" || key < farFloor && dir == "Down"){
+					if (key > farFloor && controller.getElevator(i).getRequestDir() == "Up" || key < farFloor && controller.getElevator(i).getRequestDir() == "Down"){
 						controller.sendRequest(i, key);
 					}
 				}

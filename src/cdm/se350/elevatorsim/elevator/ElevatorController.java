@@ -213,8 +213,8 @@ public final class ElevatorController {
 	 * @param floor		the floor that elevator needs to go to
 	 * @param dir		the requested travel direction
 	 */
-	public void pending(int floor, String dir){
-		pendingAlg.pending(floor, dir);
+	public void pending(){
+		pendingAlg.pending();
 	}
 	
 }
