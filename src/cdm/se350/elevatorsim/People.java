@@ -29,23 +29,15 @@ public class People implements Person, Time {
 	
 	public People(int currFl, int destFl) {
 		
-		try {
 			if (currFl <= 0 || currFl > building.getFloorList()) 
 				throw new IllegalArgumentException("Current floor cannot have a value less than 0 or greater the total floor number: " + building.getFloorList() + " :" + currFl);
 			else
 				this.setCurr(currFl);
-		} catch (Exception flrError) {
-			System.out.println("Error: " + flrError.getMessage());
-		}
-		
-		try {
+
 			if (destFl <= 0 || destFl > building.getFloorList()) 
 				throw new IllegalArgumentException("Destination floor cannot have a value less than 0 or greater the total floor number: " + building.getFloorList() + " :" + currFl);
 			else
 				this.setDest(destFl);
-		} catch (Exception flrError) {
-			System.out.println("Error: " + flrError.getMessage());
-		}
 		
 		this.setPersonNo(Floor.totalPeople);
 	}

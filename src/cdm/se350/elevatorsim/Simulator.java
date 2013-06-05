@@ -51,57 +51,90 @@ public class Simulator implements Time {
 	
 	private void setFloors(int numFl) {
 		
-		floors = numFl;
+		if(numFl < 0)
+			throw new IllegalArgumentException();
+		else
+			floors = numFl;
 	}
 	
 	private void setElevators(int numElevators) {
 		
-		elevators = numElevators;
+		if(numElevators < 0)
+			throw new IllegalArgumentException();
+		else
+			elevators = numElevators;
 	}
 	
 	private void setPeople(int numPeople) {
 		
-		people = numPeople;
+		if(numPeople < 0)
+			throw new IllegalArgumentException();
+		else
+			people = numPeople;
 	}
 	
 	private void setSeconds(long totalSecs) {
 		
-		seconds = totalSecs;
+		if(totalSecs < 0)
+			throw new IllegalArgumentException();
+		else
+			seconds = totalSecs;
 	}
 	
 	private void setScaled(int theScale) {
 		
-		scale = theScale;
+		if(theScale < 0)
+			throw new IllegalArgumentException();
+		else
+			scale = theScale;
 	}
 	
 	private void setTime(long theTime) {
 		
-		time = theTime;
+		if(theTime < 0)
+			throw new IllegalArgumentException();
+		else
+			time = theTime;
 	}
 	
 	private void setAlg(int theAlg){
 		
-		alg = theAlg;
+		if(theAlg != 1 || theAlg != 2)
+			throw new IllegalArgumentException();
+		else
+			alg	= theAlg;
 	}
 	
 	private void setDoors(int theDoors) {
 		
-		doors = theDoors;
+		if(theDoors < 0)
+			throw new IllegalArgumentException();
+		else
+			doors = theDoors;
 	}
 	
 	private void setSpeed(int theSpeed) {
 		
-		speed = theSpeed;
+		if(theSpeed < 0)
+			throw new IllegalArgumentException();
+		else
+			speed = theSpeed;
 	}
 	
 	private void setIdle(int theIdle) {
 		
-		idle = theIdle;
+		if(theIdle < 0)
+			throw new IllegalArgumentException();
+		else
+			idle = theIdle;
 	}
 	
 	private void setOccup(int theOccup) {
 		
-		occup = theOccup;
+		if(theOccup < 0)
+			throw new IllegalArgumentException();
+		else
+			occup = theOccup;
 	}
 	
 	public void run() throws InterruptedException {

@@ -211,6 +211,10 @@ public class RegElevator implements Elevator, Runnable, Time {
 		}
 	}
 	
+	/**
+	 * 
+	 * Increments the amount of passengers inside of the elevator by one.
+	 */
 	public void addPassenger() {
 		
 		synchronized(this) {
@@ -220,6 +224,9 @@ public class RegElevator implements Elevator, Runnable, Time {
 		System.out.println("Elevator " + elevatorNum + " total passenger count: " + currentOccup);
 	}
 	
+	/**
+	 * Decrements the number of passengers inside the elevator by one.
+	 */
 	public void removePassenger() {
 		
 		synchronized(this) {
@@ -230,6 +237,12 @@ public class RegElevator implements Elevator, Runnable, Time {
 		System.out.println("Elevator " + elevatorNum + " total passenger count: " + currentOccup);
 	}
 	
+	/**
+	 * 
+	 * Used to check if the elevators occupancy is full.
+	 * @return	true if the current occupancy exceeds the maximum occupancy.
+	 * 
+	 */
 	public boolean isFull() {
 		
 		if (currentOccup < maxOccup)
@@ -258,6 +271,10 @@ public class RegElevator implements Elevator, Runnable, Time {
 		state = _state;
 	}
 	
+	/**
+	 * Sets the default floor, or where the elevator will begin and default to after idling.
+	 * @param	An int that represents a floor number.
+	 */
 	public void setDefault(int floorNum) {
 		
 		DEFAULT = floorNum;
@@ -274,6 +291,12 @@ public class RegElevator implements Elevator, Runnable, Time {
 		return sec * 1000;
 	}
 	
+	/**
+	 * 
+	 * Converts nanoseconds or milliseconds to seconds
+	 * @param		A string representing the kind of value you are converting from (ie: nano, milli).
+	 * @param		A long of the time that you want converted.
+	 */
 	public long toSec(String kind, long init) {
 		
 		if(kind.equalsIgnoreCase("milli"))
@@ -306,17 +329,28 @@ public class RegElevator implements Elevator, Runnable, Time {
 		return unscaled / scaled;
 	}
 	
+	/**
+	 * Begins a timer and sets a flag that the timer has started.
+	 */
 	public void startTimer() {
 		
 		timerStart = System.currentTimeMillis();
 		timerStarted = true;
 	}
 	
+	/**
+	 * Takes in the current time, used after startTimer() in order to keep a running count. 
+	 */
 	public void countTimer() {
 		
 		timerEnd = System.currentTimeMillis();
 	}
 	
+	/**
+	 * Ends the timer and sets timer started flag to false.
+	 * Subtracts the start time with the end time and saves the total as seconds in a new attribute.
+	 * 
+	 */
 	public void endTimer() {
 		
 		timerEnd = System.currentTimeMillis();
@@ -389,6 +423,10 @@ public class RegElevator implements Elevator, Runnable, Time {
 		}
 	}
 
+	/**
+	 * Converts seconds to nanseconds
+	 * @param		A long representing the seconds to convert.
+	 */
 	public long toNano(long sec) {
 		
 		return sec * 1000000000;
