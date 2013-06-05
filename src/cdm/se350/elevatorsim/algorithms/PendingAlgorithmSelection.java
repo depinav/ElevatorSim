@@ -29,7 +29,7 @@ public class PendingAlgorithmSelection {
 	 * @param floor		Floor of the request
 	 * @param dir		direction of travel
 	 */
-	public void pending(int floor, String dir ){
-		strategy.PendingRequests(floor, dir);
+	public void pending(){
+		strategy.PendingRequests();
 	}	
 }

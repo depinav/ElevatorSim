@@ -23,7 +23,7 @@ public class HieldAlgorithmPending implements PendingResponse{
 	/**Handles request that are pending.
 	 * 
 	 */
-	public void PendingRequests(int floor, String dir){
+	public void PendingRequests(){
 		
 		int farFloor = 0;
 			
@@ -36,7 +36,7 @@ public class HieldAlgorithmPending implements PendingResponse{
 				}
 				controller.sendRequest(i,farFloor);
 				for (Integer key : pendList.keySet() ) {
-					if (key > farFloor && dir == "Up" || key < farFloor && dir == "Down"){
+					if (key > farFloor && controller.getElevator(i).getRequestDir() == "Up" || key < farFloor && controller.getElevator(i).getRequestDir() == "Down"){
 						controller.sendRequest(i, key);
 					}
 				}

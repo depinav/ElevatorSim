@@ -16,5 +16,5 @@ public interface PendingResponse {
 	 * @param floor		floor requesting elevator
 	 * @param dir		travel direction requested
 	 */
-	public void PendingRequests(int floor, String dir);
+	public void PendingRequests();
 }
